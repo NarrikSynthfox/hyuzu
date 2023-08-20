@@ -1,0 +1,127 @@
+using System.Collections;
+using System.Collections.Generic;
+using Hyuzu;
+using UnityEngine;
+
+public class HyuzuAudioManager : MonoBehaviour
+{
+    public List<AudioSource> activeSources;
+    public bool previewing;
+
+    public void PreviewSong(Song song) {
+        if (!previewing) {
+            InitSongCells(song);
+        }
+    }
+
+    void InitSongCells(Song song) {
+        InitBeatClip(song);
+        InitBassClip(song);
+        InitLoopClip(song);
+        InitLeadClip(song);
+    }
+
+    void InitBeatClip(Song song) {
+        if(song.beat.clips.Length != 0) {
+            GameObject beatObj = new GameObject("Beat");
+            beatObj.transform.parent = transform;
+
+            foreach (Keyzone zone in song.beat.keyzonesClips)
+            {
+                if ((int)zone.preset == (int)song.mode || zone.preset == HyuzuEnums.KeymapPreset.Shared) {
+                    GameObject zoneObj = new GameObject(zone.preset.ToString());
+                    zoneObj.transform.parent = beatObj.transform;
+
+                    AudioSource source = zoneObj.AddComponent<AudioSource>();
+
+                    source.loop = true;
+                    source.clip = song.beat.clips[zone.index];
+
+                    if(!source.isPlaying) { source.Play(); previewing = true; } 
+                    activeSources.Add(source);
+                }
+            }
+        }  else if (song.beat.clips.Length == 0 || song.beat.clips == null) previewing = false;
+    }
+
+    void InitBassClip(Song song) {
+        if(song.bass.clips.Length != 0) {
+            GameObject bassObj = new GameObject("Bass");
+            bassObj.transform.parent = transform;
+
+            foreach (Keyzone zone in song.bass.keyzonesClips)
+            {
+                if ((int)zone.preset == (int)song.mode || zone.preset == HyuzuEnums.KeymapPreset.Shared) {
+                    GameObject zoneObj = new GameObject(zone.preset.ToString());
+                    zoneObj.transform.parent = bassObj.transform;
+
+                    AudioSource source = zoneObj.AddComponent<AudioSource>();
+
+                    source.loop = true;
+                    source.clip = song.bass.clips[zone.index];
+
+                    if(!source.isPlaying) { source.Play(); previewing = true; } 
+                    activeSources.Add(source);
+                }
+            }
+        } else if (song.bass.clips.Length == 0 || song.bass.clips == null) previewing = false;
+    }
+
+    void InitLoopClip(Song song) {
+        if (song.loop.clips.Length != 0) {
+            GameObject loopObj = new GameObject("Loop");
+            loopObj.transform.parent = transform;
+
+            foreach (Keyzone zone in song.loop.keyzonesClips)
+            {
+                if ((int)zone.preset == (int)song.mode || zone.preset == HyuzuEnums.KeymapPreset.Shared) {
+                    GameObject zoneObj = new GameObject(zone.preset.ToString());
+                    zoneObj.transform.parent = loopObj.transform;
+
+                    AudioSource source = zoneObj.AddComponent<AudioSource>();
+
+                    source.loop = true;
+                    source.clip = song.loop.clips[zone.index];
+
+                    if(!source.isPlaying) { source.Play(); previewing = true; } 
+                    activeSources.Add(source);
+                }
+            }
+        } else if (song.loop.clips.Length == 0 || song.loop.clips == null) previewing = false;
+    }
+
+      void InitLeadClip(Song song) {
+        if (song.lead.clips.Length != 0) {
+            GameObject leadObj = new GameObject("Lead");
+            leadObj.transform.parent = transform;
+
+            foreach (Keyzone zone in song.lead.keyzonesClips)
+            {
+                if ((int)zone.preset == (int)song.mode || zone.preset == HyuzuEnums.KeymapPreset.Shared) {
+                    GameObject zoneObj = new GameObject(zone.preset.ToString());
+                    zoneObj.transform.parent = leadObj.transform;
+
+                    AudioSource source = zoneObj.AddComponent<AudioSource>();
+
+                    source.loop = true;
+                    source.clip = song.lead.clips[zone.index];
+
+                    if(!source.isPlaying) { source.Play(); previewing = true; } 
+                    activeSources.Add(source);
+                }
+            }
+        } else if (song.lead.clips.Length == 0 || song.lead.clips == null) previewing = false;
+    }
+
+    public void StopPreviewSong() {
+        if(activeSources.Count != 0) {
+            foreach (AudioSource source in activeSources)
+            {
+                source.Stop();
+                Destroy(source.transform.parent.gameObject);
+            }
+            activeSources.Clear();
+            previewing = false;
+        }
+    }
+}
