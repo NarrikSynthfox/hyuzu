@@ -1,0 +1,2409 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>UETools.Core</name>
+    </assembly>
+    <members>
+        <member name="F:UETools.Core.Enums.RoundingMode.HalfToEven">
+            Rounds to the nearest place, equidistant ties go to the value which is closest to an even value: 1.5 becomes 2, 0.5 becomes 0 
+        </member>
+        <member name="F:UETools.Core.Enums.RoundingMode.HalfFromZero">
+            Rounds to nearest place, equidistant ties go to the value which is further from zero: -0.5 becomes -1.0, 0.5 becomes 1.0 
+        </member>
+        <member name="F:UETools.Core.Enums.RoundingMode.HalfToZero">
+            Rounds to nearest place, equidistant ties go to the value which is closer to zero: -0.5 becomes 0, 0.5 becomes 0. 
+        </member>
+        <member name="F:UETools.Core.Enums.RoundingMode.FromZero">
+            Rounds to the value which is further from zero, "larger" in absolute value: 0.1 becomes 1, -0.1 becomes -1 
+        </member>
+        <member name="F:UETools.Core.Enums.RoundingMode.ToZero">
+            Rounds to the value which is closer to zero, "smaller" in absolute value: 0.1 becomes 0, -0.1 becomes 0 
+        </member>
+        <member name="F:UETools.Core.Enums.RoundingMode.ToNegativeInfinity">
+            Rounds to the value which is more negative: 0.1 becomes 0, -0.1 becomes -1 
+        </member>
+        <member name="F:UETools.Core.Enums.RoundingMode.ToPositiveInfinity">
+            Rounds to the value which is more positive: 0.1 becomes 1, -0.1 becomes 0 
+        </member>
+        <member name="T:UETools.Core.Enums.UE4Version">
+            <summary>
+            Enumeration representing the version of package.
+            </summary>
+            <remarks>Should be kept in sync with <see href="https://github.com/EpicGames/UnrealEngine/blob/release/Engine/Source/Runtime/Core/Public/UObject/ObjectVersion.h">ObjectVersion enum</see>.</remarks>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_OLDEST_LOADABLE_PACKAGE">
+            <summary>
+            The oldest package version we're able to load.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_BLUEPRINT_VARS_NOT_READ_ONLY">
+            <summary>
+            Removed restriction on blueprint-exposed variables from being read-only.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_STATIC_MESH_STORE_NAV_COLLISION">
+            <summary>
+            Added manually serialized element to UStaticMesh (precalculated nav collision).
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_ATMOSPHERIC_FOG_DECAY_NAME_CHANGE">
+            <summary>
+            Changed property name for atmospheric fog.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_SCENECOMP_TRANSLATION_TO_LOCATION">
+            <summary>
+            Change many properties/functions from Translation to Location.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_MATERIAL_ATTRIBUTES_REORDERING">
+            <summary>
+            Material attributes reordering.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_COLLISION_PROFILE_SETTING">
+            <summary>
+            Collision Profile setting has been added, and all components that exists has to be properly upgraded.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_BLUEPRINT_SKEL_TEMPORARY_TRANSIENT">
+            <summary>
+            Making the blueprint's skeleton class transient.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_BLUEPRINT_SKEL_SERIALIZED_AGAIN">
+            <summary>
+            Making the blueprint's skeleton class serialized again.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_BLUEPRINT_SETS_REPLICATION">
+            <summary>
+            Blueprint now controls replication settings again.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_WORLD_LEVEL_INFO">
+            <summary>
+            Added level info used by World browser.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_AFTER_CAPSULE_HALF_HEIGHT_CHANGE">
+            <summary>
+            Changed capsule height to capsule half-height (afterwards).
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_ADDED_NAMESPACE_AND_KEY_DATA_TO_FTEXT">
+            <summary>
+            Added Namepace, GUID (Key) and Flags to FText.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_ATTENUATION_SHAPES">
+            <summary>
+            Attenuation shapes.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_LIGHTCOMPONENT_USE_IES_TEXTURE_MULTIPLIER_ON_NON_IES_BRIGHTNESS">
+            <summary>
+            Use IES texture multiplier even when IES brightness is not being used.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_REMOVE_INPUT_COMPONENTS_FROM_BLUEPRINTS">
+            <summary>
+            Removed InputComponent as a blueprint addable component.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_VARK2NODE_USE_MEMBERREFSTRUCT">
+            <summary>
+            Use an FMemberReference struct in UK2Node_Variable.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_REFACTOR_MATERIAL_EXPRESSION_SCENECOLOR_AND_SCENEDEPTH_INPUTS">
+            <summary>
+            Refactored material expression inputs for UMaterialExpressionSceneColor and UMaterialExpressionSceneDepth.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_SPLINE_MESH_ORIENTATION">
+            <summary>
+            Spline meshes changed from Z forwards to configurable.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_REVERB_EFFECT_ASSET_TYPE">
+            <summary>
+            Added ReverbEffect asset type.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_MAX_TEXCOORD_INCREASED">
+            <summary>
+            Changed max texcoords from 4 to 8.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_SPEEDTREE_STATICMESH">
+            <summary>
+            Static meshes changed to support SpeedTrees.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_LANDSCAPE_COMPONENT_LAZY_REFERENCES">
+            <summary>
+            Landscape component reference between landscape component and collision component.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_SWITCH_CALL_NODE_TO_USE_MEMBER_REFERENCE">
+            <summary>
+            Refactored UK2Node_CallFunction to use FMemberReference.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_ADDED_SKELETON_ARCHIVER_REMOVAL">
+            <summary>
+            Added fixup step to remove skeleton class references from blueprint objects.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_ADDED_SKELETON_ARCHIVER_REMOVAL_SECOND_TIME">
+            <summary>
+            See above, take 2.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_BLUEPRINT_SKEL_CLASS_TRANSIENT_AGAIN">
+            <summary>
+            Making the skeleton class on blueprints transient.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_ADD_COOKED_TO_UCLASS">
+            <summary>
+            UClass knows if it's been cooked.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_DEPRECATED_STATIC_MESH_THUMBNAIL_PROPERTIES_REMOVED">
+            <summary>
+            Deprecated static mesh thumbnail properties were removed.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_COLLECTIONS_IN_SHADERMAPID">
+            <summary>
+            Added collections in material shader map ids.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_REFACTOR_MOVEMENT_COMPONENT_HIERARCHY">
+            <summary>
+            Renamed some Movement Component properties, added PawnMovementComponent.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_FIX_TERRAIN_LAYER_SWITCH_ORDER">
+            <summary>
+            Swap UMaterialExpressionTerrainLayerSwitch::LayerUsed/LayerNotUsed the correct way round.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_ALL_PROPS_TO_CONSTRAINTINSTANCE">
+            <summary>
+            Remove URB_ConstraintSetup.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_LOW_QUALITY_DIRECTIONAL_LIGHTMAPS">
+            <summary>
+            Low quality directional lightmaps.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_ADDED_NOISE_EMITTER_COMPONENT">
+            <summary>
+            Added NoiseEmitterComponent and removed related Pawn properties.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_ADD_TEXT_COMPONENT_VERTICAL_ALIGNMENT">
+            <summary>
+            Add text component vertical alignment.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_ADDED_FBX_ASSET_IMPORT_DATA">
+            <summary>
+            Added AssetImportData for FBX asset types, deprecating SourceFilePath and SourceFileTimestamp.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_REMOVE_LEVELBODYSETUP">
+            <summary>
+            Remove LevelBodySetup from ULevel.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_REFACTOR_CHARACTER_CROUCH">
+            <summary>
+            Refactor character crouching.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_SMALLER_DEBUG_MATERIALSHADER_UNIFORM_EXPRESSIONS">
+            <summary>
+            Trimmed down material shader debug information.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_APEX_CLOTH">
+            <summary>
+            APEX Clothing.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_SAVE_COLLISIONRESPONSE_PER_CHANNEL">
+            <summary>
+            Change Collision Channel to save only modified ones than all of them
+            @note!!! once we pass this CL, we can rename FCollisionResponseContainer enum values
+            we should rename to match ECollisionChannel.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_ADDED_LANDSCAPE_SPLINE_EDITOR_MESH">
+            <summary>
+            Added Landscape Spline editor meshes.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_CHANGED_MATERIAL_REFACTION_TYPE">
+            <summary>
+            Fixup input expressions for reading from refraction material attributes.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_REFACTOR_PROJECTILE_MOVEMENT">
+            <summary>
+            Refactor projectile movement, along with some other movement component work.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_REMOVE_PHYSICALMATERIALPROPERTY">
+            <summary>
+            Remove PhysicalMaterialProperty and replace with user defined enum.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_PURGED_FMATERIAL_COMPILE_OUTPUTS">
+            <summary>
+            Removed all compile outputs from FMaterial.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_ADD_COOKED_TO_LANDSCAPE">
+            <summary>
+            Ability to save cooked PhysX meshes to Landscape.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_CONSUME_INPUT_PER_BIND">
+            <summary>
+            Change how input component consumption works.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_SOUND_CLASS_GRAPH_EDITOR">
+            <summary>
+            Added new Graph based SoundClass Editor.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_FIXUP_TERRAIN_LAYER_NODES">
+            <summary>
+            Fixed terrain layer node guids which was causing artifacts.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_RETROFIT_CLAMP_EXPRESSIONS_SWAP">
+            <summary>
+            Added clamp min/max swap check to catch older materials.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_REMOVE_LIGHT_MOBILITY_CLASSES">
+            <summary>
+            Remove static/movable/stationary light classes.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_REFACTOR_PHYSICS_BLENDING">
+            <summary>
+            Refactor the way physics blending works to allow partial blending.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_WORLD_LEVEL_INFO_UPDATED">
+            <summary>
+            WorldLevelInfo: Added reference to parent level and streaming distance.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_STATIC_SKELETAL_MESH_SERIALIZATION_FIX">
+            <summary>
+            Fixed cooking of skeletal/static meshes due to bad serialization logic.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_REMOVE_STATICMESH_MOBILITY_CLASSES">
+            <summary>
+            Removal of InterpActor and PhysicsActor.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_REFACTOR_PHYSICS_TRANSFORMS">
+            <summary>
+            Refactor physics transforms.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_REMOVE_ZERO_TRIANGLE_SECTIONS">
+            <summary>
+            Remove zero triangle sections from static meshes and compact material indices.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_CHARACTER_MOVEMENT_DECELERATION">
+            <summary>
+            Add param for deceleration in character movement instead of using acceleration.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_CAMERA_ACTOR_USING_CAMERA_COMPONENT">
+            <summary>
+            Made ACameraActor use a UCameraComponent for parameter storage, etc...
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_CHARACTER_MOVEMENT_DEPRECATE_PITCH_ROLL">
+            <summary>
+            Deprecated some pitch/roll properties in CharacterMovementComponent.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_REBUILD_TEXTURE_STREAMING_DATA_ON_LOAD">
+            <summary>
+            Rebuild texture streaming data on load for uncooked builds
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_SUPPORT_32BIT_STATIC_MESH_INDICES">
+            <summary>
+            Add support for 32 bit index buffers for static meshes.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_ADDED_CHUNKID_TO_ASSETDATA_AND_UPACKAGE">
+            <summary>
+            Added streaming install ChunkID to AssetData and UPackage.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_CHARACTER_DEFAULT_MOVEMENT_BINDINGS">
+            <summary>
+            Add flag to control whether Character blueprints receive default movement bindings.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_APEX_CLOTH_LOD">
+            <summary>
+            APEX Clothing LOD Info.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_ATMOSPHERIC_FOG_CACHE_DATA">
+            <summary>
+            Added atmospheric fog texture data to be general
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VAR_UE4_ARRAY_PROPERTY_INNER_TAGS">
+            <summary>
+            Arrays serialize their inner's tags.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_KEEP_SKEL_MESH_INDEX_DATA">
+            <summary>
+            Skeletal mesh index data is kept in memory in game to support mesh merging.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_BODYSETUP_COLLISION_CONVERSION">
+            <summary>
+            Added compatibility for the body instance collision change.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_REFLECTION_CAPTURE_COOKING">
+            <summary>
+            Reflection capture cooking.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_REMOVE_DYNAMIC_VOLUME_CLASSES">
+            <summary>
+            Removal of DynamicTriggerVolume, DynamicBlockingVolume, DynamicPhysicsVolume.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_STORE_HASCOOKEDDATA_FOR_BODYSETUP">
+            <summary>
+            Store an additional flag in the BodySetup to indicate whether there is any cooked data to load.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_REFRACTION_BIAS_TO_REFRACTION_DEPTH_BIAS">
+            <summary>
+            Changed name of RefractionBias to RefractionDepthBias.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_REMOVE_SKELETALPHYSICSACTOR">
+            <summary>
+            Removal of SkeletalPhysicsActor.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_PC_ROTATION_INPUT_REFACTOR">
+            <summary>
+            PlayerController rotation input refactor.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_LANDSCAPE_PLATFORMDATA_COOKING">
+            <summary>
+            Landscape Platform Data cooking.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_CREATEEXPORTS_CLASS_LINKING_FOR_BLUEPRINTS">
+            <summary>
+            Added call for linking classes in CreateExport to ensure memory is initialized properly.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_REMOVE_NATIVE_COMPONENTS_FROM_BLUEPRINT_SCS">
+            <summary>
+            Remove native component nodes from the blueprint SimpleConstructionScript.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_REMOVE_SINGLENODEINSTANCE">
+            <summary>
+            Removal of Single Node Instance.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_CHARACTER_BRAKING_REFACTOR">
+            <summary>
+            Character movement braking changes.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_VOLUME_SAMPLE_LOW_QUALITY_SUPPORT">
+            <summary>
+            Supported low quality lightmaps in volume samples.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_SPLIT_TOUCH_AND_CLICK_ENABLES">
+            <summary>
+            Split bEnableTouchEvents out from bEnableClickEvents.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_HEALTH_DEATH_REFACTOR">
+            <summary>
+            Health/Death refactor.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_SOUND_NODE_ENVELOPER_CURVE_CHANGE">
+            <summary>
+            Moving USoundNodeEnveloper from UDistributionFloatConstantCurve to FRichCurve.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_POINT_LIGHT_SOURCE_RADIUS">
+            <summary>
+            Moved SourceRadius to UPointLightComponent.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_SCENE_CAPTURE_CAMERA_CHANGE">
+            <summary>
+            Scene capture actors based on camera actors.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_MOVE_SKELETALMESH_SHADOWCASTING">
+            <summary>
+            Moving SkeletalMesh shadow casting flag from LoD details to material.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_CHANGE_SETARRAY_BYTECODE">
+            <summary>
+            Changing bytecode operators for creating arrays.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_MATERIAL_INSTANCE_BASE_PROPERTY_OVERRIDES">
+            <summary>
+            Material Instances overriding base material properties.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_COMBINED_LIGHTMAP_TEXTURES">
+            <summary>
+            Combined top/bottom lightmap textures.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_BUMPED_MATERIAL_EXPORT_GUIDS">
+            <summary>
+            Forced material lightmass guids to be regenerated.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_BLUEPRINT_INPUT_BINDING_OVERRIDES">
+            <summary>
+            Allow overriding of parent class input bindings.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_FIXUP_BODYSETUP_INVALID_CONVEX_TRANSFORM">
+            <summary>
+            Fix up convex invalid transform.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_FIXUP_STIFFNESS_AND_DAMPING_SCALE">
+            <summary>
+            Fix up scale of physics stiffness and damping value.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_REFERENCE_SKELETON_REFACTOR">
+            <summary>
+            Convert USkeleton and FBoneContrainer to using FReferenceSkeleton.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_K2NODE_REFERENCEGUIDS">
+            <summary>
+            Adding references to variable, function, and macro nodes to be able to update to renamed values.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_FIXUP_ROOTBONE_PARENT">
+            <summary>
+            Fix up the 0th bone's parent bone index.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_TEXT_RENDER_COMPONENTS_WORLD_SPACE_SIZING">
+             <summary>
+            Allow setting of TextRenderComponents size in world space.
+             </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_MATERIAL_INSTANCE_BASE_PROPERTY_OVERRIDES_PHASE_2">
+            <summary>
+            Material Instances overriding base material properties #2.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_CLASS_NOTPLACEABLE_ADDED">
+            <summary>
+            CLASS_Placeable becomes CLASS_NotPlaceable.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_WORLD_LEVEL_INFO_LOD_LIST">
+            <summary>
+            Added LOD info list to a world tile description.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_CHARACTER_MOVEMENT_VARIABLE_RENAMING_1">
+            <summary>
+            CharacterMovement variable naming refactor.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_FSLATESOUND_CONVERSION">
+            <summary>
+            FName properties containing sound names converted to FSlateSound properties.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_WORLD_LEVEL_INFO_ZORDER">
+            <summary>
+            Added ZOrder to a world tile description.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_PACKAGE_REQUIRES_LOCALIZATION_GATHER_FLAGGING">
+            <summary>
+            Added flagging of localization gather requirement to packages.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_BP_ACTOR_VARIABLE_DEFAULT_PREVENTING">
+            <summary>
+            Preventing Blueprint Actor variables from having default values.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_TEST_ANIMCOMP_CHANGE">
+            <summary>
+            Preventing Blueprint Actor variables from having default values.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_EDITORONLY_BLUEPRINTS">
+            <summary>
+            Class as primary asset, name convention changed.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_EDGRAPHPINTYPE_SERIALIZATION">
+            <summary>
+            Custom serialization for FEdGraphPinType.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_NO_MIRROR_BRUSH_MODEL_COLLISION">
+            <summary>
+            Stop generating 'mirrored' cooked mesh for Brush and Model components.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_CHANGED_CHUNKID_TO_BE_AN_ARRAY_OF_CHUNKIDS">
+            <summary>
+            Changed ChunkID to be an array of IDs.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_WORLD_NAMED_AFTER_PACKAGE">
+            <summary>
+            Worlds have been renamed from "TheWorld" to be named after the package containing them.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_SKY_LIGHT_COMPONENT">
+            <summary>
+            Added sky light component.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_WORLD_LAYER_ENABLE_DISTANCE_STREAMING">
+            <summary>
+            Added Enable distance streaming flag to FWorldTileLayer.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_REMOVE_ZONES_FROM_MODEL">
+            <summary>
+            Remove visibility/zone information from UModel.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_FIX_ANIMATIONBASEPOSE_SERIALIZATION">
+            <summary>
+            Fix base pose serialization .
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_SUPPORT_8_BONE_INFLUENCES_SKELETAL_MESHES">
+            <summary>
+            Support for up to 8 skinning influences per vertex on skeletal meshes (on non-gpu vertices).
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_ADD_OVERRIDE_GRAVITY_FLAG">
+            <summary>
+            Add explicit bOverrideGravity to world settings.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_SUPPORT_GPUSKINNING_8_BONE_INFLUENCES">
+            <summary>
+            Support for up to 8 skinning influences per vertex on skeletal meshes (on gpu vertices).
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_ANIM_SUPPORT_NONUNIFORM_SCALE_ANIMATION">
+            <summary>
+            Supporting nonuniform scale animation.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_ENGINE_VERSION_OBJECT">
+            <summary>
+            Engine version is stored as a FEngineVersion object rather than changelist number.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_PUBLIC_WORLDS">
+            <summary>
+            World assets now have RF_Public.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_SKELETON_GUID_SERIALIZATION">
+            <summary>
+            Skeleton Guid.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_CHARACTER_MOVEMENT_WALKABLE_FLOOR_REFACTOR">
+            <summary>
+            Character movement WalkableFloor refactor.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_INVERSE_SQUARED_LIGHTS_DEFAULT">
+            <summary>
+            Lights default to inverse squared.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_DISABLED_SCRIPT_LIMIT_BYTECODE">
+            <summary>
+            Disabled SCRIPT_LIMIT_BYTECODE_TO_64KB.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_PRIVATE_REMOTE_ROLE">
+            <summary>
+            Made remote role private, exposed bReplicates.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_FOLIAGE_STATIC_MOBILITY">
+            <summary>
+            Fix up old foliage components to have static mobility (superseded by VER_UE4_FOLIAGE_MOVABLE_MOBILITY).
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_BUILD_SCALE_VECTOR">
+            <summary>
+            Change BuildScale from a float to a vector.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_FOLIAGE_COLLISION">
+            <summary>
+            After implementing foliage collision, need to disable collision on old foliage instances.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_SKY_BENT_NORMAL">
+            <summary>
+            Added sky bent normal to indirect lighting cache.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_LANDSCAPE_COLLISION_DATA_COOKING">
+            <summary>
+            Added cooking for landscape collision data.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_MORPHTARGET_CPU_TANGENTZDELTA_FORMATCHANGE">
+            <summary>
+            Convert CPU tangent Z delta to vector from PackedNormal since we don't get any benefit other than memory
+            we still convert all to FVector in CPU time whenever any calculation
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_SOFT_CONSTRAINTS_USE_MASS">
+            <summary>
+            Soft constraint limits will implicitly use the mass of the bodies.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_REFLECTION_DATA_IN_PACKAGES">
+            <summary>
+            Reflection capture data saved in packages.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_FOLIAGE_MOVABLE_MOBILITY">
+            <summary>
+            Fix up old foliage components to have movable mobility (superseded by VER_UE4_FOLIAGE_STATIC_LIGHTING_SUPPORT).
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_UNDO_BREAK_MATERIALATTRIBUTES_CHANGE">
+            <summary>
+            Undo BreakMaterialAttributes changes as it broke old content.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_ADD_CUSTOMPROFILENAME_CHANGE">
+            <summary>
+            Now Default custom profile name isn't NONE anymore due to copy/paste not working properly with it.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_FLIP_MATERIAL_COORDS">
+            <summary>
+            Permanently flip and scale material expression coordinates.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_MEMBERREFERENCE_IN_PINTYPE">
+            <summary>
+            PinSubCategoryMemberReference added to FEdGraphPinType.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_VEHICLES_UNIT_CHANGE">
+            <summary>
+            Vehicles use Nm for Torque instead of cm and RPM instead of rad/s.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_ANIMATION_REMOVE_NANS">
+            <summary>
+            removes NANs from all animations when loaded
+            now importing should detect NaNs, so we should not have NaNs in source data
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_SKELETON_ASSET_PROPERTY_TYPE_CHANGE">
+            <summary>
+            Change skeleton preview attached assets property type.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_FIX_BLUEPRINT_VARIABLE_FLAGS">
+            <summary>
+            Fix some blueprint variables that have the CPF_DisableEditOnTemplate flag set
+            when they shouldn't
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_VEHICLES_UNIT_CHANGE2">
+            <summary>
+            Vehicles use Nm for Torque instead of cm and RPM instead of rad/s part two (missed conversion for some variables.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_UCLASS_SERIALIZE_INTERFACES_AFTER_LINKING">
+            <summary>
+            Changed order of interface class serialization.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_STATIC_MESH_SCREEN_SIZE_LODS">
+            <summary>
+            Change from LOD distances to display factors.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_FIX_MATERIAL_COORDS">
+            <summary>
+            Requires test of material coords to ensure they're saved correctly.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_SPEEDTREE_WIND_V7">
+            <summary>
+            Changed SpeedTree wind presets to v7.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_LOAD_FOR_EDITOR_GAME">
+            <summary>
+            NeedsLoadForEditorGame added.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_SERIALIZE_RICH_CURVE_KEY">
+            <summary>
+            Manual serialization of FRichCurveKey to save space.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_MOVE_LANDSCAPE_MICS_AND_TEXTURES_WITHIN_LEVEL">
+            <summary>
+            Change the outer of ULandscapeMaterialInstanceConstants and Landscape-related textures to the level in which they reside.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_FTEXT_HISTORY">
+            <summary>
+            FTexts have creation history data, removed Key, Namespaces, and SourceString.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_FIX_MATERIAL_COMMENTS">
+            <summary>
+            Shift comments to the left to contain expressions properly.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_STORE_BONE_EXPORT_NAMES">
+            <summary>
+            Bone names stored as FName means that we can't guarantee the correct case on export, now we store a separate string for export purposes only.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_MESH_EMITTER_INITIAL_ORIENTATION_DISTRIBUTION">
+            <summary>
+            changed mesh emitter initial orientation to distribution.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_DISALLOW_FOLIAGE_ON_BLUEPRINTS">
+            <summary>
+            Foliage on blueprints causes crashes.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_FIXUP_MOTOR_UNITS">
+            <summary>
+            change motors to use revolutions per second instead of rads/second.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_DEPRECATED_MOVEMENTCOMPONENT_MODIFIED_SPEEDS">
+            <summary>
+            deprecated MovementComponent functions including "ModifiedMaxSpeed" et al.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_RENAME_CANBECHARACTERBASE">
+            <summary>
+            rename CanBeCharacterBase.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_GAMEPLAY_TAG_CONTAINER_TAG_TYPE_CHANGE">
+            <summary>
+            Change GameplayTagContainers to have FGameplayTags instead of FNames; Required to fix-up native serialization.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_FOLIAGE_SETTINGS_TYPE">
+            <summary>
+            Change from UInstancedFoliageSettings to UFoliageType, and change the api from being keyed on UStaticMesh* to UFoliageType*.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_STATIC_SHADOW_DEPTH_MAPS">
+            <summary>
+            Lights serialize static shadow depth maps.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_ADD_TRANSACTIONAL_TO_DATA_ASSETS">
+            <summary>
+            Add RF_Transactional to data assets, fixing undo problems when editing them.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_ADD_LB_WEIGHTBLEND">
+            <summary>
+            Change LB_AlphaBlend to LB_WeightBlend in ELandscapeLayerBlendType.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_ADD_ROOTCOMPONENT_TO_FOLIAGEACTOR">
+            <summary>
+            Add root component to an foliage actor, all foliage cluster components will be attached to a root.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_FIX_MATERIAL_PROPERTY_OVERRIDE_SERIALIZE">
+            <summary>
+            FMaterialInstanceBasePropertyOverrides didn't use proper UObject serialize.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_ADD_LINEAR_COLOR_SAMPLER">
+            <summary>
+            Addition of linear color sampler. color sample type is changed to linear sampler if source texture !sRGB.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_ADD_STRING_ASSET_REFERENCES_MAP">
+            <summary>
+            Added StringAssetReferencesMap to support renames of FStringAssetReference properties.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_BLUEPRINT_USE_SCS_ROOTCOMPONENT_SCALE">
+            <summary>
+            Apply scale from SCS RootComponent details in the Blueprint Editor to new actor instances at construction time.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_LEVEL_STREAMING_DRAW_COLOR_TYPE_CHANGE">
+            <summary>
+            Changed level streaming to have a linear color since the visualization doesn't gamma correct.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_CLEAR_NOTIFY_TRIGGERS">
+            <summary>
+            Cleared end triggers from non-state anim notifies.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_SKELETON_ADD_SMARTNAMES">
+            <summary>
+            Convert old curve names stored in anim assets into skeleton smartnames.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_ADDED_CURRENCY_CODE_TO_FTEXT">
+            <summary>
+            Added the currency code field to FTextHistory_AsCurrency.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_ENUM_CLASS_SUPPORT">
+            <summary>
+            Added support for C++11 enum classes.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_FIXUP_WIDGET_ANIMATION_CLASS">
+            <summary>
+            Fixup widget animation class.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_SOUND_COMPRESSION_TYPE_ADDED">
+            <summary>
+            USoundWave objects now contain details about compression scheme used.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_AUTO_WELDING">
+            <summary>
+            Bodies will automatically weld when attached.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_RENAME_CROUCHMOVESCHARACTERDOWN">
+            <summary>
+            Rename UCharacterMovementComponent::bCrouchMovesCharacterDown.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_LIGHTMAP_MESH_BUILD_SETTINGS">
+            <summary>
+            Lightmap parameters in FMeshBuildSettings.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_RENAME_SM3_TO_ES3_1">
+            <summary>
+            Rename SM3 to ES3_1 and updates featurelevel material node selector.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_DEPRECATE_UMG_STYLE_ASSETS">
+            <summary>
+            Deprecated separate style assets for use in UMG.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_POST_DUPLICATE_NODE_GUID">
+            <summary>
+            Duplicating Blueprints will regenerate NodeGuids after this version.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_RENAME_CAMERA_COMPONENT_VIEW_ROTATION">
+            <summary>
+            Rename USpringArmComponent::bUseControllerViewRotation to bUsePawnViewRotation,
+            Rename UCameraComponent::bUseControllerViewRotation to bUsePawnViewRotation (and change the default value).
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_CASE_PRESERVING_FNAME">
+            <summary>
+            Changed FName to be case preserving.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_RENAME_CAMERA_COMPONENT_CONTROL_ROTATION">
+            <summary>
+            Rename USpringArmComponent::bUsePawnViewRotation to bUsePawnControlRotation,
+            Rename UCameraComponent::bUsePawnViewRotation to bUsePawnControlRotation.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_FIX_REFRACTION_INPUT_MASKING">
+            <summary>
+            Fix bad refraction material attribute masks.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_GLOBAL_EMITTER_SPAWN_RATE_SCALE">
+            <summary>
+            A global spawn rate for emitters.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_CLEAN_DESTRUCTIBLE_SETTINGS">
+            <summary>
+            Cleanup destructible mesh settings.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_CHARACTER_MOVEMENT_UPPER_IMPACT_BEHAVIOR">
+            <summary>
+            CharacterMovementComponent refactor of AdjustUpperHemisphereImpact and deprecation of some associated vars.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_BP_MATH_VECTOR_EQUALITY_USES_EPSILON">
+            <summary>
+            Changed Blueprint math equality functions for vectors and rotators to operate as a "nearly" equals rather than "exact".
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_FOLIAGE_STATIC_LIGHTING_SUPPORT">
+            <summary>
+            Static lighting support was re-added to foliage, and mobility was returned to static.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_SLATE_COMPOSITE_FONTS">
+            <summary>
+            Added composite fonts to Slate font info.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_REMOVE_SAVEGAMESUMMARY">
+            <summary>
+            Remove UDEPRECATED_SaveGameSummary, required for UWorld::Serialize.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_REMOVE_SKELETALMESH_COMPONENT_BODYSETUP_SERIALIZATION">
+             <summary>
+            Remove bodyseutp serialization from skeletal mesh component.
+             </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_SLATE_BULK_FONT_DATA">
+            <summary>
+            Made Slate font data use bulk data to store the embedded font data.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_ADD_PROJECTILE_FRICTION_BEHAVIOR">
+            <summary>
+            Add new friction behavior in ProjectileMovementComponent.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_MOVEMENTCOMPONENT_AXIS_SETTINGS">
+            <summary>
+            Add axis settings enum to MovementComponent.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_GRAPH_INTERACTIVE_COMMENTBUBBLES">
+            <summary>
+            Switch to new interactive comments, requires boundry conversion to preserve previous states.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_LANDSCAPE_SERIALIZE_PHYSICS_MATERIALS">
+            <summary>
+            Landscape serializes physical materials for collision objects.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_RENAME_WIDGET_VISIBILITY">
+            <summary>
+            Rename Visiblity on widgets to Visibility.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_ANIMATION_ADD_TRACKCURVES">
+            <summary>
+            add track curves for animation.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_MONTAGE_BRANCHING_POINT_REMOVAL">
+            <summary>
+            Removed BranchingPoints from AnimMontages and converted them to regular AnimNotifies.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_BLUEPRINT_ENFORCE_CONST_IN_FUNCTION_OVERRIDES">
+            <summary>
+            Enforce const-correctness in Blueprint implementations of native C++ const class methods.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_ADD_PIVOT_TO_WIDGET_COMPONENT">
+            <summary>
+            Added pivot to widget components, need to load old versions as a 0,0 pivot, new default is 0.5,0.5.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_PAWN_AUTO_POSSESS_AI">
+            <summary>
+            Added finer control over when AI Pawns are automatically possessed. Also renamed Pawn.AutoPossess to Pawn.AutoPossessPlayer indicate this was a setting for players and not AI.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_FTEXT_HISTORY_DATE_TIMEZONE">
+            <summary>
+            Added serialization of timezone to FTextHistory for AsDate operations.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_SORT_ACTIVE_BONE_INDICES">
+            <summary>
+            Sort ActiveBoneIndices on lods so that we can avoid doing it at run time.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_PERFRAME_MATERIAL_UNIFORM_EXPRESSIONS">
+            <summary>
+            Added per-frame material uniform expressions.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_MIKKTSPACE_IS_DEFAULT">
+            <summary>
+            Make MikkTSpace the default tangent space calculation method for static meshes.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_LANDSCAPE_GRASS_COOKING">
+            <summary>
+            Only applies to cooked files, grass cooking support.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_FIX_SKEL_VERT_ORIENT_MESH_PARTICLES">
+            <summary>
+            Fixed code for using the bOrientMeshEmitters property.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_LANDSCAPE_STATIC_SECTION_OFFSET">
+            <summary>
+            Do not change landscape section offset on load under world composition.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_ADD_MODIFIERS_RUNTIME_GENERATION">
+            <summary>
+            New options for navigation data runtime generation (static, modifiers only, dynamic).
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_MATERIAL_MASKED_BLENDMODE_TIDY">
+            <summary>
+            Tidied up material's handling of masked blend mode.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_MERGED_ADD_MODIFIERS_RUNTIME_GENERATION_TO_4_7_DEPRECATED">
+            <summary>
+            Original version of VER_UE4_MERGED_ADD_MODIFIERS_RUNTIME_GENERATION_TO_4_7; renumbered to prevent blocking promotion in main.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_AFTER_MERGED_ADD_MODIFIERS_RUNTIME_GENERATION_TO_4_7_DEPRECATED">
+            <summary>
+            Original version of VER_UE4_AFTER_MERGED_ADD_MODIFIERS_RUNTIME_GENERATION_TO_4_7; renumbered to prevent blocking promotion in main.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_MERGED_ADD_MODIFIERS_RUNTIME_GENERATION_TO_4_7">
+            <summary>
+            After merging VER_UE4_ADD_MODIFIERS_RUNTIME_GENERATION into 4.7 branch.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_AFTER_MERGING_ADD_MODIFIERS_RUNTIME_GENERATION_TO_4_7">
+            <summary>
+            After merging VER_UE4_ADD_MODIFIERS_RUNTIME_GENERATION into 4.7 branch.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_SERIALIZE_LANDSCAPE_GRASS_DATA">
+            <summary>
+            Landscape grass weightmap data is now generated in the editor and serialized.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_OPTIONALLY_CLEAR_GPU_EMITTERS_ON_INIT">
+            <summary>
+            New property to optionally prevent gpu emitters clearing existing particles on Init().
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_SERIALIZE_LANDSCAPE_GRASS_DATA_MATERIAL_GUID">
+            <summary>
+            Also store the Material guid with the landscape grass data.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_BLUEPRINT_GENERATED_CLASS_COMPONENT_TEMPLATES_PUBLIC">
+            <summary>
+            Make sure that all template components from blueprint generated classes are flagged as public.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_ACTOR_COMPONENT_CREATION_METHOD">
+            <summary>
+            Split out creation method on ActorComponents to distinguish between native, instance, and simple or user construction script.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_K2NODE_EVENT_MEMBER_REFERENCE">
+            <summary>
+            K2Node_Event now uses FMemberReference for handling references.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_STRUCT_GUID_IN_PROPERTY_TAG">
+            <summary>
+            FPropertyTag stores GUID of struct.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_REMOVE_UNUSED_UPOLYS_FROM_UMODEL">
+            <summary>
+            Remove unused UPolys from UModel cooked content.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_REBUILD_HIERARCHICAL_INSTANCE_TREES">
+            <summary>
+            This doesn't do anything except trigger a rebuild on HISMC cluster trees, in this case to get a good "occlusion query" level.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_PACKAGE_SUMMARY_HAS_COMPATIBLE_ENGINE_VERSION">
+            <summary>
+            Package summary includes an CompatibleWithEngineVersion field, separately to the version it's saved with.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_TRACK_UCS_MODIFIED_PROPERTIES">
+            <summary>
+            Track UCS modified properties on Actor Components.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_LANDSCAPE_SPLINE_CROSS_LEVEL_MESHES">
+            <summary>
+            Allowed landscape spline meshes to be stored into landscape streaming levels rather than the spline's level.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_DEPRECATE_USER_WIDGET_DESIGN_SIZE">
+            <summary>
+            Deprecate the variables used for sizing in the designer on UUserWidget.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_ADD_EDITOR_VIEWS">
+            <summary>
+            Make the editor views array dynamically sized.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_FOLIAGE_WITH_ASSET_OR_CLASS">
+            <summary>
+            Updated foliage to work with either FoliageType assets or blueprint classes.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_BODYINSTANCE_BINARY_SERIALIZATION">
+            <summary>
+            Allows PhysicsSerializer to serialize shapes and actors for faster load times.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_SERIALIZE_BLUEPRINT_EVENTGRAPH_FASTCALLS_IN_UFUNCTION">
+            <summary>
+            Added fastcall data serialization directly in UFunction.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_INTERPCURVE_SUPPORTS_LOOPING">
+            <summary>
+            Changes to USplineComponent and FInterpCurve.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_MATERIAL_INSTANCE_BASE_PROPERTY_OVERRIDES_DITHERED_LOD_TRANSITION">
+            <summary>
+            Material Instances overriding base material LOD transitions.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_SERIALIZE_LANDSCAPE_ES2_TEXTURES">
+            <summary>
+            Serialize ES2 textures separately rather than overwriting the properties used on other platforms.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_CONSTRAINT_INSTANCE_MOTOR_FLAGS">
+            <summary>
+            Constraint motor velocity is broken into per-component.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_SERIALIZE_PINTYPE_CONST">
+            <summary>
+            Serialize bIsConst in FEdGraphPinType.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_LIBRARY_CATEGORIES_AS_FTEXT">
+            <summary>
+            Change UMaterialFunction::LibraryCategories to LibraryCategoriesText (old assets were saved before auto-conversion of UArrayProperty was possible).
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_SKIP_DUPLICATE_EXPORTS_ON_SAVE_PACKAGE">
+            <summary>
+            Check for duplicate exports while saving packages.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_SERIALIZE_TEXT_IN_PACKAGES">
+            <summary>
+            Pre-gathering of gatherable, localizable text in packages to optimize text gathering operation times.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_ADD_BLEND_MODE_TO_WIDGET_COMPONENT">
+            <summary>
+            Added pivot to widget components, need to load old versions as a 0,0 pivot, new default is 0.5,0.5.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_NEW_LIGHTMASS_PRIMITIVE_SETTING">
+            <summary>
+            Added lightmass primitive setting.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_REPLACE_SPRING_NOZ_PROPERTY">
+            <summary>
+            Deprecate NoZSpring property on spring nodes to be replaced with TranslateZ property.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_TIGHTLY_PACKED_ENUMS">
+            <summary>
+            Keep enums tight and serialize their values as pairs of FName and value. Don't insert dummy values.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_ASSET_IMPORT_DATA_AS_JSON">
+            <summary>
+            Changed Asset import data to serialize file meta data as JSON.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_TEXTURE_LEGACY_GAMMA">
+            <summary>
+            Legacy gamma support for textures.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_ADDED_NATIVE_SERIALIZATION_FOR_IMMUTABLE_STRUCTURES">
+            <summary>
+            Added WithSerializer for basic native structures like FVector, FColor etc to improve serialization performance.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_DEPRECATE_UMG_STYLE_OVERRIDES">
+            <summary>
+            Deprecated attributes that override the style on UMG widgets.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_STATIC_SHADOWMAP_PENUMBRA_SIZE">
+            <summary>
+            Shadowmap penumbra size stored.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_NIAGARA_DATA_OBJECT_DEV_UI_FIX">
+            <summary>
+            Fix BC on Niagara effects from the data object and dev UI changes.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_FIXED_DEFAULT_ORIENTATION_OF_WIDGET_COMPONENT">
+            <summary>
+            Fixed the default orientation of widget component so it faces down +x.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_REMOVED_MATERIAL_USED_WITH_UI_FLAG">
+            <summary>
+            Removed bUsedWithUI flag from UMaterial and replaced it with a new material domain for UI.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_CHARACTER_MOVEMENT_ADD_BRAKING_FRICTION">
+            <summary>
+            Added braking friction separate from turning friction.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_BSP_UNDO_FIX">
+            <summary>
+            Removed TTransArrays from UModel.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_DYNAMIC_PARAMETER_DEFAULT_VALUE">
+            <summary>
+            Added default value to dynamic parameter.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_STATIC_MESH_EXTENDED_BOUNDS">
+            <summary>
+            Added ExtendedBounds to StaticMesh.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_ADDED_NON_LINEAR_TRANSITION_BLENDS">
+            <summary>
+            Added non-linear blending to anim transitions, deprecating old types.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_AO_MATERIAL_MASK">
+            <summary>
+            AO Material Mask texture.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_NAVIGATION_AGENT_SELECTOR">
+            <summary>
+            Replaced navigation agents selection with single structure.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_MESH_PARTICLE_COLLISIONS_CONSIDER_PARTICLE_SIZE">
+            <summary>
+            Mesh particle collisions consider particle size.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_BUILD_MESH_ADJ_BUFFER_FLAG_EXPOSED">
+            <summary>
+            Adjacency buffer building no longer automatically handled based on triangle count, user-controlled.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_MAX_ANGULAR_VELOCITY_DEFAULT">
+            <summary>
+            Change the default max angular velocity.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_APEX_CLOTH_TESSELLATION">
+            <summary>
+            Build Adjacency index buffer for clothing tessellation.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_DECAL_SIZE">
+            <summary>
+            Added DecalSize member, solved backward compatibility.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_KEEP_ONLY_PACKAGE_NAMES_IN_STRING_ASSET_REFERENCES_MAP">
+            <summary>
+            Keep only package names in StringAssetReferencesMap.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_COOKED_ASSETS_IN_EDITOR_SUPPORT">
+            <summary>
+            Support sound cue not saving out editor only data.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_DIALOGUE_WAVE_NAMESPACE_AND_CONTEXT_CHANGES">
+            <summary>
+            Updated dialogue wave localization gathering logic.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_MAKE_ROT_RENAME_AND_REORDER">
+            <summary>
+            Renamed MakeRot MakeRotator and rearranged parameters.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_K2NODE_VAR_REFERENCEGUIDS">
+            <summary>
+            K2Node_Variable will properly have the VariableReference Guid set if available.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_SOUND_CONCURRENCY_PACKAGE">
+            <summary>
+            Added support for sound concurrency settings structure and overrides.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_USERWIDGET_DEFAULT_FOCUSABLE_FALSE">
+            <summary>
+            Changing the default value for focusable user widgets to false.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_BLUEPRINT_CUSTOM_EVENT_CONST_INPUT">
+            <summary>
+            Custom event nodes implicitly set 'const' on array and non-array pass-by-reference input params.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_USE_LOW_PASS_FILTER_FREQ">
+            <summary>
+            Renamed HighFrequencyGain to LowPassFilterFrequency.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_NO_ANIM_BP_CLASS_IN_GAMEPLAY_CODE">
+            <summary>
+            UAnimBlueprintGeneratedClass can be replaced by a dynamic class.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_SCS_STORES_ALLNODES_ARRAY">
+            <summary>
+            The SCS keeps a list of all nodes in its hierarchy rather than recursively building it each time it is requested.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_FBX_IMPORT_DATA_RANGE_ENCAPSULATION">
+            <summary>
+            Moved StartRange and EndRange in UFbxAnimSequenceImportData to use FInt32Interval.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_CAMERA_COMPONENT_ATTACH_TO_ROOT">
+            <summary>
+            Adding a new root scene component to camera component.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_INSTANCED_STEREO_UNIFORM_UPDATE">
+            <summary>
+            Updating custom material expression nodes for instanced stereo implementation.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_STREAMABLE_TEXTURE_MIN_MAX_DISTANCE">
+            <summary>
+            Texture streaming min and max distance to handle HLOD.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_INJECT_BLUEPRINT_STRUCT_PIN_CONVERSION_NODES">
+            <summary>
+            Fixing up invalid struct-to-struct pin connections by injecting available conversion nodes.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_INNER_ARRAY_TAG_INFO">
+            <summary>
+            Saving tag data for Array Property's inner property.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_FIX_SLOT_NAME_DUPLICATION">
+            <summary>
+            Fixed duplicating slot node names in skeleton due to skeleton preload on compile.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_STREAMABLE_TEXTURE_AABB">
+            <summary>
+            Texture streaming using AABBs instead of Spheres.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_PROPERTY_GUID_IN_PROPERTY_TAG">
+            <summary>
+            FPropertyTag stores GUID of property.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_NAME_HASHES_SERIALIZED">
+            <summary>
+            Name table hashes are calculated and saved out rather than at load time.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_INSTANCED_STEREO_UNIFORM_REFACTOR">
+            <summary>
+            Updating custom material expression nodes for instanced stereo implementation refactor.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_COMPRESSED_SHADER_RESOURCES">
+            <summary>
+            Added compression to the shader resource for memory savings.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_PRELOAD_DEPENDENCIES_IN_COOKED_EXPORTS">
+            <summary>
+            Cooked files contain the dependency graph for the event driven loader (the serialization is largely independent of the use of the new loader).
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_TemplateIndex_IN_COOKED_EXPORTS">
+            <summary>
+            Cooked files contain the TemplateIndex used by the event driven loader (the serialization is largely independent of the use of the new loader, i.e. this will be null if cooking for the old loader).
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_PROPERTY_TAG_SET_MAP_SUPPORT">
+            <summary>
+            FPropertyTag includes contained type(s) for Set and Map properties.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_ADDED_SEARCHABLE_NAMES">
+            <summary>
+            Added SearchableNames to the package summary and asset registry.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_64BIT_EXPORTMAP_SERIALSIZES">
+            <summary>
+            Increased size of SerialSize and SerialOffset in export map entries to 64 bit, allow support for bigger files.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_SKYLIGHT_MOBILE_IRRADIANCE_MAP">
+            <summary>
+            Sky light stores IrradianceMap for mobile renderer.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_ADDED_SWEEP_WHILE_WALKING_FLAG">
+            <summary>
+            Added flag to control sweep behavior while walking in UCharacterMovementComponent.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_ADDED_SOFT_OBJECT_PATH">
+            <summary>
+            StringAssetReference changed to SoftObjectPath and swapped to serialize as a name+string instead of a string.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_POINTLIGHT_SOURCE_ORIENTATION">
+            <summary>
+            Changed the source orientation of point lights to match spot lights (z axis).
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_ADDED_PACKAGE_SUMMARY_LOCALIZATION_ID">
+            <summary>
+            LocalizationId has been added to the package summary (editor-only).
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_FIX_WIDE_STRING_CRC">
+            <summary>
+            Fixed case insensitive hashes of wide strings containing character values from 128-255.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_AUTOMATIC_VERSION_PLUS_ONE">
+            <summary>
+            Last version implemented.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.Enums.UE4Version.VER_UE4_AUTOMATIC_VERSION">
+            <summary>
+            Latest version implemented.
+            </summary>
+        </member>
+        <member name="T:UETools.Core.EPackageFlags">
+            <summary>
+            Flags of the package.
+            </summary>
+            <remarks>Should be kept in sync with <see href="https://github.com/EpicGames/UnrealEngine/blob/master/Engine/Source/Runtime/CoreUObject/Public/UObject/ObjectMacros.h#L102">EPackageFlags</see>.</remarks>
+        </member>
+        <member name="F:UETools.Core.EPackageFlags.None">
+            <summary>
+            No flags.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.EPackageFlags.NewlyCreated">
+            <summary>
+            Newly created package, not saved yet. In editor only.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.EPackageFlags.ClientOptional">
+            <summary>
+            Purely optional for clients.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.EPackageFlags.ServerSideOnly">
+            <summary>
+            Only needed on the server side.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.EPackageFlags.CompiledIn">
+            <summary>
+            This package is from "compiled in" classes.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.EPackageFlags.ForDiffing">
+            <summary>
+            This package was loaded just for the purposes of diffing.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.EPackageFlags.EditorOnly">
+            <summary>
+            This is editor-only package (for example: editor module script package).
+            </summary>
+        </member>
+        <member name="F:UETools.Core.EPackageFlags.Developer">
+            <summary>
+            Developer module.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.EPackageFlags.ContainsMapData">
+            <summary>
+            Contains map data (UObjects only referenced by a single ULevel) but is stored in a different package.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.EPackageFlags.Need">
+            <summary>
+            Client needs to download this package.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.EPackageFlags.Compiling">
+            <summary>
+            Package is currently being compiled.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.EPackageFlags.ContainsMap">
+            <summary>
+            Set if the package contains a ULevel / UWorld object.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.EPackageFlags.RequiresLocalizationGather">
+            <summary>
+            Set if the package contains any data to be gathered by localization.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.EPackageFlags.DisallowLazyLoading">
+            <summary>
+            Set if the archive serializing this package cannot use lazy loading.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.EPackageFlags.PlayInEditor">
+            <summary>
+            Set if the package was created for the purpose of PIE.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.EPackageFlags.ContainsScript">
+            <summary>
+            Package is allowed to contain UClass objects.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.EPackageFlags.DisallowExport">
+            <summary>
+            Editor should not export asset in this package.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.EPackageFlags.ReloadingForCooker">
+            <summary>
+            This package is reloading in the cooker, try to avoid getting data we will never need. We won't save this package.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.EPackageFlags.FilterEditorOnly">
+            <summary>
+            Package has editor-only data filtered.
+            </summary>
+        </member>
+        <member name="F:UETools.Core.EPackageFlags.InMemoryOnly">
+            <summary>
+            Flag mask that indicates if this package is a package that exists in memory only.
+            </summary>
+        </member>
+        <member name="T:UETools.Core.FArchive">
+            <summary>
+            Representation of Unreal Engine 4 binary data stream reader/writer
+            </summary>
+        </member>
+        <member name="M:UETools.Core.FArchive.Read``1(System.Collections.Generic.List{``0}@)">
+            <summary>
+            Deserializes array of elements to the <paramref name="item"/> <see cref="T:System.Collections.Generic.List`1"/>.
+            </summary>
+            <param name="item">List of deserialized elements.</param>
+        </member>
+        <member name="M:UETools.Core.FArchive.Read``1(System.Collections.Generic.List{``0}@,System.Int32)">
+            <summary>
+            Deserializes array of elements to the <paramref name="item"/> <see cref="T:System.Collections.Generic.List`1"/>, using declared <paramref name="length"/>.
+            </summary>
+            <param name="item">List of deserialized elements.</param>
+            <param name="length">Count of elements.</param>
+        </member>
+        <member name="M:UETools.Core.FArchive.Read``2(System.Collections.Generic.Dictionary{``0,``1}@)">
+            <summary>
+            Deserializes array of elements to the <paramref name="item"/> <see cref="T:System.Collections.Generic.Dictionary`2"/>.
+            </summary>
+            <param name="item">Dictionary of deserialized elements.</param>
+        </member>
+        <member name="M:UETools.Core.FArchive.Read``2(System.Collections.Generic.Dictionary{``0,``1}@,System.Int32)">
+            <summary>
+            Deserializes array of elements to the <paramref name="item"/> <see cref="T:System.Collections.Generic.Dictionary`2"/>, using declared <paramref name="length"/>.
+            </summary>
+            <param name="item">Dictionary of deserialized elements.</param>
+            <param name="length">Count of elements.</param>
+        </member>
+        <member name="P:UETools.Core.FArchive.AssetVersion">
+            <summary>
+            Version of the asset, separate from serialized UObject <see cref="P:UETools.Core.FArchive.Version"/>.
+            </summary>
+        </member>
+        <member name="P:UETools.Core.FArchive.AssetSubversion">
+            <summary>
+            Subversion of the asset.
+            </summary>
+            <remarks>Use only for backwards incompatible changes checks.</remarks>
+        </member>
+        <member name="P:UETools.Core.FArchive.Version">
+            <summary>
+            Version of the package being read.
+            </summary>
+        </member>
+        <member name="P:UETools.Core.FArchive.LicenseeVersion">
+            <summary>
+            Licensee specific version of the package being read.
+            </summary>
+        </member>
+        <member name="M:UETools.Core.FArchive.Skip(System.Int64)">
+            <summary>
+            Sets the position within the current stream counting from <see cref="F:System.IO.SeekOrigin.Current"/> by <paramref name="len"/> bytes.
+            </summary>
+            <param name="len">Count of bytes to move stream forward.</param>
+            <returns>The new position within the current stream.</returns>
+        </member>
+        <member name="M:UETools.Core.FArchive.Seek(System.Int64,System.IO.SeekOrigin)">
+            <summary>
+            Sets the position within the current stream.
+            </summary>
+            <param name="offset">A byte offset relative to the <paramref name="origin"/> parameter.</param>
+            <param name="origin">A value of type <see cref="T:System.IO.SeekOrigin"/> indicating the reference point used to obtain the new position.</param>
+            <returns>The new position within the current stream.</returns>
+        </member>
+        <member name="M:UETools.Core.FArchive.Seek(System.Int64)">
+            <summary>
+            Sets the position within the current stream counting from <see cref="F:System.IO.SeekOrigin.Begin"/>.
+            </summary>
+            <param name="offset">A byte offset relative to the start of the stream.</param>
+            <returns>The new position within the current stream.</returns>
+        </member>
+        <member name="M:UETools.Core.FArchive.Tell">
+            <summary>
+            Gets current position in the data stream.
+            </summary>
+            <returns>Current position in the data stream.</returns>
+        </member>
+        <member name="M:UETools.Core.FArchive.Length">
+            <summary>
+            Gets the length of the stream in bytes.
+            </summary>
+            <returns>Length of the stream in bytes.</returns>
+        </member>
+        <member name="M:UETools.Core.FArchive.EOF">
+            <summary>
+            Checks whether we've reached the end of the stream.
+            </summary>
+            <returns><see langword="true"/> if <see cref="M:UETools.Core.FArchive.Length"/> is greater than current stream position; otherwise <see langword="false"/>.</returns>
+        </member>
+        <member name="M:UETools.Core.FArchive.Dispose">
+            <summary>
+            Disposes underlying data stream.
+            </summary>
+        </member>
+        <member name="M:UETools.Core.FArchive.Read``1">
+            <summary>
+            Read value of type <typeparamref name="T"/> from stream.
+            </summary>
+            <typeparam name="T">Value type to read from the stream.</typeparam>
+            <returns>Value read from stream.</returns>
+        </member>
+        <member name="M:UETools.Core.FArchive.ReadUnsafe``1(``0@)">
+            <summary>
+            Reads instance of the unmanaged type <typeparamref name="T"/> from the data stream.
+            </summary>
+            <typeparam name="T">Value type to read from the stream.</typeparam>
+            <param name="item">Object to initialize.</param>
+        </member>
+        <member name="M:UETools.Core.FArchive.Read``1(``0@)">
+            <summary>
+            Creates new instance of the object and deserializes it from the data stream.
+            </summary>
+            <typeparam name="T">Any type implementing <see cref="T:UETools.Core.Interfaces.IUnrealSerializable"/> and has parameterless constructor.</typeparam>
+            <param name="item">Object to initialize.</param>
+        </member>
+        <member name="M:UETools.Core.FArchive.Read(System.Boolean@)">
+            <summary>
+            Reads <see langword="bool"/> out of data stream.
+            </summary>
+            <param name="item">Value to read.</param>
+        </member>
+        <member name="M:UETools.Core.FArchive.Read(System.SByte@)">
+            <summary>
+            Reads <see langword="sbyte"/> out of data stream.
+            </summary>
+            <param name="item">Value to read.</param>
+        </member>
+        <member name="M:UETools.Core.FArchive.Read(System.Int16@)">
+            <summary>
+            Reads <see langword="short"/> out of data stream.
+            </summary>
+            <param name="item">Value to read.</param>
+        </member>
+        <member name="M:UETools.Core.FArchive.Read(System.Int32@)">
+            <summary>
+            Reads <see langword="int"/> out of data stream.
+            </summary>
+            <param name="item">Value to read.</param>
+        </member>
+        <member name="M:UETools.Core.FArchive.Read(System.Int64@)">
+            <summary>
+            Reads <see langword="long"/> out of data stream.
+            </summary>
+            <param name="item">Value to read.</param>
+        </member>
+        <member name="M:UETools.Core.FArchive.Read(System.Byte@)">
+            <summary>
+            Reads <see langword="byte"/> out of data stream.
+            </summary>
+            <param name="item">Value to read.</param>
+        </member>
+        <member name="M:UETools.Core.FArchive.Read(System.UInt16@)">
+            <summary>
+            Reads <see langword="ushort"/> out of data stream.
+            </summary>
+            <param name="item">Value to read.</param>
+        </member>
+        <member name="M:UETools.Core.FArchive.Read(System.UInt32@)">
+            <summary>
+            Reads <see langword="uint"/> out of data stream.
+            </summary>
+            <param name="item">Value to read.</param>
+        </member>
+        <member name="M:UETools.Core.FArchive.Read(System.UInt64@)">
+            <summary>
+            Reads <see langword="ulong"/> out of data stream.
+            </summary>
+            <param name="item">Value to read.</param>
+        </member>
+        <member name="M:UETools.Core.FArchive.Read(System.Guid@)">
+            <summary>
+            Reads <see langword="Guid"/> out of data stream.
+            </summary>
+            <param name="item">Value to read.</param>
+        </member>
+        <member name="M:UETools.Core.FArchive.Read(System.Single@)">
+            <summary>
+            Reads <see langword="float"/> out of data stream.
+            </summary>
+            <param name="item">Value to read.</param>
+        </member>
+        <member name="M:UETools.Core.FArchive.Read(System.Double@)">
+            <summary>
+            Reads <see langword="double"/> out of data stream.
+            </summary>
+            <param name="item">Value to read.</param>
+        </member>
+        <member name="M:UETools.Core.FArchive.Read(System.Decimal@)">
+            <summary>
+            Reads <see langword="decimal"/> out of data stream.
+            </summary>
+            <param name="item">Value to read.</param>
+        </member>
+        <member name="M:UETools.Core.FArchive.Read(System.String@,System.Int32)">
+            <summary>
+            Reads <see langword="string"/> out of data stream.
+            </summary>
+            <param name="item">Value to read.</param>
+            <param name="length"></param>
+        </member>
+        <member name="M:UETools.Core.FArchive.Read(System.Byte[]@)">
+            <summary>
+            Reads <see cref="T:System.Array"/> of <see langword="byte"/> out of data stream.
+            </summary>
+            <param name="item">Value to read.</param>
+        </member>
+        <member name="M:UETools.Core.FArchive.Read(System.Byte[]@,System.Int32)">
+            <summary>
+            Reads <see cref="T:System.Array"/> of <see langword="byte"/> out of data stream, using declared <paramref name="length"/>.
+            </summary>
+            <param name="item">Value to read.</param>
+            <param name="length">Number of bytes to read.</param>
+        </member>
+        <member name="M:UETools.Core.FArchive.Read(System.Span{System.Byte}@)">
+            <summary>
+            Reads <see cref="T:System.Span`1"/> of <see langword="byte"/> out of data stream.
+            </summary>
+            <param name="item">Value to read.</param>
+        </member>
+        <member name="M:UETools.Core.FArchive.Read(System.Span{System.Byte}@,System.Int32)">
+            <summary>
+            Reads <see cref="T:System.Span`1"/> of <see langword="byte"/> out of data stream, using declared <paramref name="length"/>.
+            </summary>
+            <param name="item">Value to read.</param>
+            <param name="length">Number of bytes to read.</param>
+        </member>
+        <member name="M:UETools.Core.FArchive.Read(System.Memory{System.Byte}@)">
+            <summary>
+            Reads <see cref="T:System.Memory`1"/> of <see langword="byte"/> out of data stream.
+            </summary>
+            <param name="item">Value to read.</param>
+        </member>
+        <member name="M:UETools.Core.FArchive.Read(System.Memory{System.Byte}@,System.Int32)">
+            <summary>
+            Reads <see cref="T:System.Memory`1"/> of <see langword="byte"/> out of data stream, using declared <paramref name="length"/>.
+            </summary>
+            <param name="item">Value to read.</param>
+            <param name="length">Number of bytes to read.</param>
+        </member>
+        <member name="M:UETools.Core.FArchive.GetTable``1(System.String)">
+            <summary>
+            Gets instance of <see cref="T:UETools.Core.UnrealTable`1"/> that has been added with name <paramref name="tableName"/> and has entries of type <typeparamref name="T"/>.
+            </summary>
+            <typeparam name="T">Type of keys the found instance stores.</typeparam>
+            <param name="tableName">Name of instance in the tables dictionary.</param>
+            <returns>Instance of the type deriving from <see cref="T:UETools.Core.UnrealTable`1"/> with specified name, or null.</returns>
+        </member>
+        <member name="M:UETools.Core.FArchive.FindTableOfType``1(UETools.Core.UnrealTable{``0}@)">
+            <summary>
+            Searches for first table that stores entries of type <typeparamref name="T"/>, and returns its instance on success.
+            </summary>
+            <typeparam name="T">Type of keys the found instance stores.</typeparam>
+            <param name="table">Found instance</param>
+            <returns><see langword="true"/> if instance has been found; otherwise <see langword="false"/>.</returns>
+        </member>
+        <member name="F:UETools.Core.FName.INDEX_NONE">
+            <summary>
+            Invalid index, signifies uninitialized FName.
+            </summary>
+        </member>
+        <member name="T:UETools.Core.FString">
+            <summary>
+            Unreal Engine 4 FString implementation.
+            </summary>
+            <remarks><see langword="string"/> class implementation doesn't contain parameterless constructor, which made this class necessary.</remarks>
+        </member>
+        <member name="M:UETools.Core.FString.op_Implicit(UETools.Core.FString)~System.String">
+            <summary>
+            Implicit conversion from Unreal <see cref="T:UETools.Core.FString"/> instance to <see langword="string"/>.
+            </summary>
+            <param name="value">Instance to get string from.</param>
+        </member>
+        <member name="M:UETools.Core.FString.op_Implicit(System.String)~UETools.Core.FString">
+            <summary>
+            Implicit conversion from <see langword="string"/> to Unreal <see cref="T:UETools.Core.FString"/> instance.
+            </summary>
+            <param name="value"></param>
+        </member>
+        <member name="M:UETools.Core.FString.ToString">
+            <summary>
+            Gets underlying <see langword="string"/> value.
+            </summary>
+            <returns>Underlying <see langword="string"/>.</returns>
+        </member>
+        <member name="M:UETools.Core.FString.GetHashCode">
+            <summary>
+            Gets combined hash of underlying <see langword="string"/> and its <see cref="T:System.Text.Encoding"/>.
+            </summary>
+            <returns>Combined hash of underlying <see langword="string"/> and recognized <see cref="T:System.Text.Encoding"/></returns>
+        </member>
+        <member name="M:UETools.Core.FString.Equals(System.Object)">
+            <summary>
+            Determines whether the this instance and another specified <see langword="object"/> are equal, trying to use specialized comparer when possible.
+            </summary>
+            <param name="obj">The <see langword="object"/> to compare with the current <see langword="object"/>.</param>
+            <returns><see langword="true"/> if the specified object is equal to the current object; otherwise, <see langword="false"/>.</returns>
+        </member>
+        <member name="M:UETools.Core.FString.Equals(System.String)">
+            <summary>
+            Determines whether this instance and another specified <see langword="string"/> object have the same value.
+            </summary>
+            <param name="other">The <see langword="string"/> to compare to this instance.</param>
+            <returns><see langword="true"/> if the value of the value parameter is the same as the value of this instance; otherwise, <see langword="false"/>. If value is <see langword="null"/>, the method returns <see langword="false"/>.</returns>
+        </member>
+        <member name="M:UETools.Core.FString.Equals(UETools.Core.FString)">
+            <summary>
+            Determines whether this instance and another specified <see cref="T:UETools.Core.FString"/> object have the same underlying <see langword="string"/> value.
+            </summary>
+            <param name="other">The instance to compare with.</param>
+            <returns><see langword="true"/> if the value of the value parameter is the same as the value of this instance; otherwise, <see langword="false"/>. If value is <see langword="null"/>, the method returns <see langword="false"/>.</returns>
+        </member>
+        <member name="M:UETools.Core.FString.GetEnumerator">
+            <summary>
+            Retrieves an object that can iterate through the individual characters in the underlying string.
+            </summary>
+            <returns>An enumerator object of the underlying string.</returns>
+        </member>
+        <member name="M:UETools.Core.FString.CompareTo(System.String)">
+            <summary>
+            Compares this instance with a specified <see langword="string"/> and indicates whether this instance precedes, follows, or appears in the same position in the sort order as the specified <see langword="string"/>.
+            </summary>
+            <param name="other">The <see langword="string"/> to compare with this instance.</param> 
+            <returns>A 32-bit signed integer that indicates whether this instance precedes, follows, or appears in the same position in the sort order as the <paramref name="other"/> parameter.</returns>
+        </member>
+        <member name="M:UETools.Core.FString.CompareTo(System.Object)">
+            <summary>
+            Compares this instance with a specified <see langword="object"/> and indicates whether this instance precedes, follows, or appears in the same position in the sort order as the specified <see langword="object"/>.
+            </summary>
+            <param name="obj">An <see langword="object"/> that evaluates to a <see langword="string"/>.</param> 
+            <returns>A 32-bit signed integer that indicates whether this instance precedes, follows, or appears in the same position in the sort order as the <paramref name="obj"/> parameter.</returns>
+        </member>
+        <member name="M:UETools.Core.FString.op_Equality(UETools.Core.FString,UETools.Core.FString)">
+            <summary>
+            Determines whether two specified <see cref="T:UETools.Core.FString"/> instances have the same value.
+            </summary>
+            <param name="first">First instance to use for comparision.</param>
+            <param name="second">Second instance to use for comparision.</param>
+            <returns><see langword="true"/> if parameters are equal; otherwise <see langword="false"/>.</returns>
+        </member>
+        <member name="M:UETools.Core.FString.op_Inequality(UETools.Core.FString,UETools.Core.FString)">
+            <summary>
+            Determines whether two specified <see cref="T:UETools.Core.FString"/> instances have the different value.
+            </summary>
+            <param name="first">First instance to use for comparision.</param>
+            <param name="second">Second instance to use for comparision.</param>
+            <returns><see langword="true"/> if parameters are not equal; otherwise <see langword="false"/>.</returns>
+        </member>
+        <member name="M:UETools.Core.FString.op_Equality(System.String,UETools.Core.FString)">
+            <summary>
+            Determines whether <see langword="string"/> and <see cref="P:UETools.Core.FString.Value"/> have the same value.
+            </summary>
+            <param name="first"><see langword="string"/> to use for comparision.</param>
+            <param name="second"><see cref="T:UETools.Core.FString"/> instance to use for comparision.</param>
+            <returns><see langword="true"/> if parameters are equal; otherwise <see langword="false"/>.</returns>
+        </member>
+        <member name="M:UETools.Core.FString.op_Inequality(System.String,UETools.Core.FString)">
+            <summary>
+            Determines whether <see langword="string"/> and <see cref="P:UETools.Core.FString.Value"/> have the different value.
+            </summary>
+            <param name="first"><see langword="string"/> to use for comparision.</param>
+            <param name="second"><see cref="T:UETools.Core.FString"/> instance to use for comparision.</param>
+            <returns><see langword="true"/> if parameters are not equal; otherwise <see langword="false"/>.</returns>
+        </member>
+        <member name="M:UETools.Core.FString.op_Equality(UETools.Core.FString,System.String)">
+            <summary>
+            Determines whether <see cref="P:UETools.Core.FString.Value"/> and <see langword="string"/> have the same value.
+            </summary>
+            <param name="first"><see cref="T:UETools.Core.FString"/> instance to use for comparision.</param>
+            <param name="second"><see langword="string"/> to use for comparision.</param>
+            <returns><see langword="true"/> if parameters are equal; otherwise <see langword="false"/>.</returns>
+        </member>
+        <member name="M:UETools.Core.FString.op_Inequality(UETools.Core.FString,System.String)">
+            <summary>
+            Determines whether <see cref="P:UETools.Core.FString.Value"/> and <see langword="string"/> have the different value.
+            </summary>
+            <param name="first"><see cref="T:UETools.Core.FString"/> instance to use for comparision.</param>
+            <param name="second"><see langword="string"/> to use for comparision.</param>
+            <returns><see langword="true"/> if parameters are not equal; otherwise <see langword="false"/>.</returns>
+        </member>
+        <member name="P:UETools.Core.FString.Value">
+            <summary>
+            Deserialized value of the string instance.
+            </summary>
+        </member>
+        <member name="P:UETools.Core.FString.Length">
+            <summary>
+            Length of the string, as serialized.
+            </summary>
+            <remarks>Negative length denotes UTF16</remarks>
+        </member>
+        <member name="P:UETools.Core.FString.IsWide">
+            <summary>
+            Returns whether strings is using <see cref="T:System.Text.UTF8Encoding"/> or <see cref="T:System.Text.UnicodeEncoding"/>
+            </summary>
+            <value><see langword="true"/> if <see langword="string"/> is encoded using <see cref="T:System.Text.UnicodeEncoding"/> or <see langword="false"/> if <see cref="T:System.Text.UTF8Encoding"/></value>
+            <remarks>Negative length denotes UTF16</remarks>
+        </member>
+        <member name="M:UETools.Core.FString.#ctor">
+            <summary>
+            Creates new string with <see cref="F:System.String.Empty"/> as value.
+            </summary>
+        </member>
+        <member name="M:UETools.Core.FString.#ctor(System.String)">
+            <summary>
+            Creates new string using <paramref name="value"/>.
+            </summary>
+            <param name="value">Value to assign to the underlying string.</param>
+        </member>
+        <member name="M:UETools.Core.FString.Serialize(UETools.Core.FArchive)">
+            <inheritdoc />
+        </member>
+        <member name="T:UETools.Core.Interfaces.IUnrealReadable`1">
+            <summary>
+            Provides an interface for serializing object data as readable text.
+            </summary>
+        </member>
+        <member name="M:UETools.Core.Interfaces.IUnrealReadable`1.ReadTo(`0)">
+            <summary>
+            Read object into the <paramref name="writer"/>.
+            </summary>
+            <param name="writer">Buffer to write to.</param>
+        </member>
+        <member name="T:UETools.Core.Interfaces.IUnrealLocalizationProvider">
+            <summary>
+            Interface for providing localized strings by their namespace/uid pair.
+            </summary>
+        </member>
+        <member name="M:UETools.Core.Interfaces.IUnrealLocalizationProvider.Get(System.String,System.String)">
+            <summary>
+            Attempts to find localized string using its <paramref name="key"/>/<paramref name="id"/> pair.
+            </summary>
+            <param name="key">Namespace of localized string.</param>
+            <param name="id">UID of localized string.</param>
+            <returns>Localized string if found; otherwise <see langword="null"/></returns>
+        </member>
+        <member name="T:UETools.Core.Interfaces.IUnrealReadable">
+            <inheritdoc />
+        </member>
+        <member name="T:UETools.Core.Interfaces.IUnrealSerializable">
+            <summary>
+            Provides an interface for deserialization of the Unreal Engine binary data to implementing object.
+            </summary>
+        </member>
+        <member name="M:UETools.Core.Interfaces.IUnrealSerializable.Serialize(UETools.Core.FArchive)">
+            <summary>
+            Serialize  object with specified <paramref name="archive"/>.
+            </summary>
+            <param name="archive">Stream of binary data.</param>
+        </member>
+        <member name="T:UETools.Core.Interfaces.IUnrealValueReader">
+            <summary>
+            <see cref="T:System.IO.BinaryReader"/> like implementation of deserializing data from its binary form.
+            </summary>
+        </member>
+        <member name="P:UETools.Core.Interfaces.IUnrealValueReader.Length">
+            <summary>
+            Length of the underlying binary data stream.
+            </summary>
+        </member>
+        <member name="P:UETools.Core.Interfaces.IUnrealValueReader.Position">
+            <summary>
+            Byte offset position in the stream.
+            </summary>
+        </member>
+        <member name="M:UETools.Core.Interfaces.IUnrealValueReader.Seek(System.Int64,System.IO.SeekOrigin)">
+            <summary>
+            Sets the position within the current stream.
+            </summary>
+            <param name="offset">A byte offset relative to the <paramref name="origin"/> parameter.</param>
+            <param name="origin">A value of type <see cref="T:System.IO.SeekOrigin"/> indicating the reference point used to obtain the new position.</param>
+            <returns>The new position within the current stream.</returns>
+        </member>
+        <member name="M:UETools.Core.Interfaces.IUnrealValueReader.ReadBytes(System.Int32)">
+            <summary>
+            Reads <see cref="T:System.Memory`1"/> of bytes out of the underlying data stream.
+            </summary>
+            <param name="count">Number of bytes to read.</param>
+            <returns>Deserialized <see cref="T:System.Memory`1"/> of bytes.</returns>
+        </member>
+        <member name="M:UETools.Core.Interfaces.IUnrealValueReader.ReadSpanBytes(System.Int32)">
+            <summary>
+            Reads <see cref="T:System.Span`1"/> of bytes out of the underlying data stream.
+            </summary>
+            <param name="count">Number of bytes to read.</param>
+            <returns>Deserialized <see cref="T:System.Span`1"/> of bytes.</returns>
+        </member>
+        <member name="M:UETools.Core.Interfaces.IUnrealValueReader.ReadBoolean">
+            <summary>
+            Reads <see langword="bool"/> value out of the underlying data stream.
+            </summary>
+            <returns>Deserialized <see langword="bool"/> value.</returns>
+        </member>
+        <member name="M:UETools.Core.Interfaces.IUnrealValueReader.ReadSByte">
+            <summary>
+            Reads <see langword="sbyte"/> value out of the underlying data stream.
+            </summary>
+            <returns>Deserialized <see langword="sbyte"/> value.</returns>
+        </member>
+        <member name="M:UETools.Core.Interfaces.IUnrealValueReader.ReadInt16">
+            <summary>
+            Reads <see langword="short"/> value out of the underlying data stream.
+            </summary>
+            <returns>Deserialized <see langword="short"/> value.</returns>
+        </member>
+        <member name="M:UETools.Core.Interfaces.IUnrealValueReader.ReadInt32">
+            <summary>
+            Reads <see langword="int"/> value out of the underlying data stream.
+            </summary>
+            <returns>Deserialized <see langword="int"/> value.</returns>
+        </member>
+        <member name="M:UETools.Core.Interfaces.IUnrealValueReader.ReadInt64">
+            <summary>
+            Reads <see langword="long"/> value out of the underlying data stream.
+            </summary>
+            <returns>Deserialized <see langword="long"/> value.</returns>
+        </member>
+        <member name="M:UETools.Core.Interfaces.IUnrealValueReader.ReadByte">
+            <summary>
+            Reads <see langword="byte"/> value out of the underlying data stream.
+            </summary>
+            <returns>Deserialized <see langword="byte"/> value.</returns>
+        </member>
+        <member name="M:UETools.Core.Interfaces.IUnrealValueReader.ReadUInt16">
+            <summary>
+            Reads <see langword="ushort"/> value out of the underlying data stream.
+            </summary>
+            <returns>Deserialized <see langword="ushort"/> value.</returns>
+        </member>
+        <member name="M:UETools.Core.Interfaces.IUnrealValueReader.ReadUInt32">
+            <summary>
+            Reads <see langword="uint"/> value out of the underlying data stream.
+            </summary>
+            <returns>Deserialized <see langword="uint"/> value.</returns>
+        </member>
+        <member name="M:UETools.Core.Interfaces.IUnrealValueReader.Slice(System.Int64)">
+            <summary>
+            Get reader starting at specific <paramref name="start"/> offset.
+            </summary>
+            <param name="start">Offset at which the stream should start from the original stream.</param>
+            <returns>Reader of the selected part of the stream.</returns>
+        </member>
+        <member name="M:UETools.Core.Interfaces.IUnrealValueReader.Slice(System.Int64,System.Int64)">
+            <summary>
+            Get reader starting at specific <paramref name="start"/> offset, with specified <paramref name="length"/>.
+            </summary>
+            <param name="start">Offset at which the stream should start from the original stream.</param>
+            <param name="length">Length of the sliced stream from the original stream.</param>
+            <returns>Reader of the selected part of the stream.</returns>
+        </member>
+        <member name="M:UETools.Core.Interfaces.IUnrealValueReader.ReadUInt64">
+            <summary>
+            Reads <see langword="ulong"/> value out of the underlying data stream.
+            </summary>
+            <returns>Deserialized <see langword="ulong"/> value.</returns>
+        </member>
+        <member name="M:UETools.Core.Interfaces.IUnrealValueReader.ReadSingle">
+            <summary>
+            Reads <see langword="float"/> value out of the underlying data stream.
+            </summary>
+            <returns>Deserialized <see langword="float"/> value.</returns>
+        </member>
+        <member name="M:UETools.Core.Interfaces.IUnrealValueReader.ReadDouble">
+            <summary>
+            Reads <see langword="double"/> value out of the underlying data stream.
+            </summary>
+            <returns>Deserialized <see langword="double"/> value.</returns>
+        </member>
+        <member name="M:UETools.Core.Interfaces.IUnrealValueReader.ReadDecimal">
+            <summary>
+            Reads <see langword="decimal"/> value out of the underlying data stream.
+            </summary>
+            <returns>Deserialized <see langword="decimal"/> value.</returns>
+        </member>
+        <member name="M:UETools.Core.Interfaces.IUnrealValueReader.ReadByteString">
+            <summary>
+            Reads <see langword="string"/> value out of the underlying data stream, prefixed with single byte of length.
+            </summary>
+            <returns>Deserialized <see langword="string"/> value.</returns>
+        </member>
+        <member name="M:UETools.Core.Interfaces.IUnrealValueReader.ReadUnrealString(System.Int32)">
+            <summary>
+            Reads underlying <see langword="string"/> value of <see cref="T:UETools.Core.FString"/> instance out of the underlying data stream.
+            </summary>
+            <param name="length">Negative length denotes <see cref="T:System.Text.UnicodeEncoding"/>, positive <see cref="T:System.Text.UTF8Encoding"/>.</param>
+            <returns></returns>
+        </member>
+        <member name="T:UETools.Core.MD5Hash">
+            <summary>
+            Unreal Engine 4 serialization of MD5 hash
+            </summary>
+        </member>
+        <member name="M:UETools.Core.MD5Hash.Serialize(UETools.Core.FArchive)">
+            <summary>
+            Deserializes hash data from the stream.
+            </summary>
+            <param name="archive">Stream of binary data to read from.</param>
+        </member>
+        <member name="M:UETools.Core.MD5Hash.ToString">
+            <summary>
+            Get <see cref="T:System.Security.Cryptography.MD5"/> as a bytestring.
+            </summary>
+            <returns>MD5 in its <see cref="T:System.String"/> representation, or empty string if the hash is invalid.</returns>
+        </member>
+        <member name="T:UETools.Core.MemoryReader">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:UETools.Core.MemoryReader.Seek(System.Int64,System.IO.SeekOrigin)">
+            <summary>
+            
+            </summary>
+            <param name="offset"></param>
+            <param name="origin"></param>
+            <returns></returns>
+        </member>
+        <member name="T:UETools.Core.SHA1Hash">
+            <summary>
+            Unreal Engine 4 serialization of SHA1 hash
+            </summary>
+        </member>
+        <member name="M:UETools.Core.SHA1Hash.Serialize(UETools.Core.FArchive)">
+            <summary>
+            Deserializes hash data from the stream.
+            </summary>
+            <param name="archive">Stream of binary data to read from.</param>
+        </member>
+        <member name="M:UETools.Core.SHA1Hash.ToString">
+            <summary>
+            Get <see cref="T:System.Security.Cryptography.SHA1"/> as a bytestring.
+            </summary>
+            <returns>SHA1 in its <see cref="T:System.String"/> representation.</returns>
+        </member>
+        <member name="T:UETools.Core.UnrealException">
+            <summary>
+            Base exception type for the libraries.
+            </summary>
+        </member>
+        <member name="M:UETools.Core.UnrealException.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:UETools.Core.UnrealException"/> class.
+            </summary>
+        </member>
+        <member name="M:UETools.Core.UnrealException.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:UETools.Core.UnrealException"/> class with a specified error message.
+            </summary>
+            <param name="message">The message that describes the error.</param>
+        </member>
+        <member name="M:UETools.Core.UnrealException.#ctor(System.String,System.Exception)">
+            <summary>
+            Initializes a new instance of the <see cref="T:UETools.Core.UnrealException"/> class with a specified error message and a reference to the inner exception that is the cause of this exception.
+            </summary>
+            <param name="message">The error message that explains the reason for the exception.</param>
+            <param name="innerException">The exception that is the cause of the current exception, or a <see langword="null"/> reference if no inner exception is specified.</param>
+        </member>
+        <member name="M:UETools.Core.UnrealException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Initializes a new instance of the <see cref="T:UETools.Core.UnrealException"/> class with serialized data.
+            </summary>
+            <param name="info">The <see cref="T:System.Runtime.Serialization.SerializationInfo"/> that holds the serialized object data about the exception being thrown.</param>
+            <param name="context">The <see cref="T:System.Runtime.Serialization.StreamingContext"/> that contains contextual information about the source or destination.</param>
+            <exception cref="T:System.ArgumentNullException"><paramref name="info"/> is <see langword="null"/>.</exception>
+            <exception cref="T:System.Runtime.Serialization.SerializationException">The class name is <see langword="null"/> or <see cref="P:System.Exception.HResult"/> is zero.</exception>
+        </member>
+        <member name="T:UETools.Core.UnrealTable`1">
+            <summary>
+            Base class of every table type that's supposed to be added to internal FArchive storage.
+            </summary>
+            <remarks>
+            Deriving class is expected to be sealed and define UnrealTableAttribute, otherwise constructor throws NotImplementedException.
+            </remarks>
+            <typeparam name="T">Type of items stored in the table.</typeparam>
+        </member>
+        <member name="P:UETools.Core.UnrealTable`1.Items">
+            <summary>
+            <see cref="T:System.Collections.Generic.List`1"/> of elements exposed by the table.
+            </summary>
+        </member>
+        <member name="P:UETools.Core.UnrealTable`1.ItemCount">
+            <summary>
+            Support for predefined amount of entries in the table. Should be used if the array doesn't have its count serialized before other elements.
+            </summary>
+        </member>
+        <member name="M:UETools.Core.UnrealTable`1.#ctor">
+            <summary>
+            Checks if class implements UnrealTableAttribute and is sealed.
+            </summary>
+            <exception cref="T:System.NotImplementedException">
+            Thrown when class doesn't define <see cref="T:UETools.Core.UnrealTableAttribute"/>, or isn't marked <see langword="sealed"/>.
+            </exception>
+        </member>
+        <member name="M:UETools.Core.UnrealTable`1.#ctor(System.Int32)">
+            <summary>
+            Sets predefined length of the list.
+            </summary>
+            <param name="length">Value to assign to <see cref="P:UETools.Core.UnrealTable`1.ItemCount"/></param>
+        </member>
+        <member name="M:UETools.Core.UnrealTable`1.Serialize(UETools.Core.FArchive)">
+            <summary>
+            Adds class instance to <see cref="P:UETools.Core.FArchive.Tables"/> with the <see cref="P:UETools.Core.UnrealTableAttribute.Name"/> as key.
+            </summary>
+            <remarks>
+            Should be called in derived class as it adds the class instance to <see cref="P:UETools.Core.FArchive.Tables"/>.
+            </remarks>
+            <param name="archive">Stream of binary data to read from.</param>
+        </member>
+        <member name="F:UETools.Core.UnrealTable`1._entries">
+            <summary>
+            Field to support deserialization by <see cref="M:UETools.Core.FArchive.Read``1(System.Collections.Generic.List{``0}@)"/> calls in deriving classes.
+            </summary>
+        </member>
+        <member name="T:UETools.Core.UnrealTableAttribute">
+            <summary>
+            Determines the name that instance of a class will be added as in the table dictionary.
+            </summary>
+        </member>
+        <member name="P:UETools.Core.UnrealTableAttribute.Name">
+            <summary>
+            Gets or sets the name associated with instances of the class.
+            </summary>
+        </member>
+        <member name="M:UETools.Core.UnrealTableAttribute.#ctor(System.String)">
+            <summary>
+            Initializes attribute with the specified name.
+            </summary>
+            <param name="name">Name to associate with the instance of this class.</param>
+        </member>
+    </members>
+</doc>

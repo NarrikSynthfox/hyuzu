@@ -29,13 +29,12 @@ namespace Hyuzu {
             Classical,
             Country,
             Rock,
-            AlternativeIndie,
-            Metal,
-            International,
             Pop,
             RnB,
             HipHopRap,
             Dance,
+            International,
+            AlternativeIndie,
             Soundtrack, //used for games, movies, etc.
             Misc
         }

@@ -1,0 +1,119 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>UETools.Assets</name>
+    </assembly>
+    <members>
+        <member name="M:UETools.Assets.AssetRegistry.Serialize(UETools.Core.FArchive)">
+            <inheritdoc />
+            <exception cref="T:UETools.Core.UnrealException">Thrown when <see cref="P:UETools.Core.FArchive.Version"/> is not set.</exception>
+        </member>
+        <member name="F:UETools.Assets.Internal.Registry.AssetDependencies.EAssetRegistryDependency.Hard">
+            <summary>
+            Dependencies which are required for correct usage of the source asset, and must be loaded at the same time.
+            </summary>
+        </member>
+        <member name="F:UETools.Assets.Internal.Registry.AssetDependencies.EAssetRegistryDependency.Soft">
+            <summary>
+            Dependencies which don't need to be loaded for the object to be used (i.e. soft object paths).
+            </summary>
+        </member>
+        <member name="F:UETools.Assets.Internal.Registry.AssetDependencies.EAssetRegistryDependency.SearchableName">
+            <summary>
+            References to specific SearchableNames inside a package.
+            </summary>
+        </member>
+        <member name="F:UETools.Assets.Internal.Registry.AssetDependencies.EAssetRegistryDependency.SoftManage">
+            <summary>
+            Indirect management references, these are set through recursion for Primary Assets that manage packages or other primary assets.
+            </summary>
+        </member>
+        <member name="F:UETools.Assets.Internal.Registry.AssetDependencies.EAssetRegistryDependency.HardManage">
+            <summary>
+            Reference that says one object directly manages another object, set when Primary Assets manage things explicitly.
+            </summary>
+        </member>
+        <member name="F:UETools.Assets.Internal.Registry.AssetDependencies.EAssetRegistryDependency.None">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:UETools.Assets.Enums.EAssetRegistryVersion.PreVersioning">
+            <summary>
+            From before file versioning was implemented.
+            </summary>
+        </member>
+        <member name="F:UETools.Assets.Enums.EAssetRegistryVersion.HardSoftDependencies">
+            <summary>
+            The first version of the runtime asset registry to include file versioning.
+            </summary>
+        </member>
+        <member name="F:UETools.Assets.Enums.EAssetRegistryVersion.AddAssetRegistryState">
+            <summary>
+            Added FAssetRegistryState and support for piecemeal serialization.
+            </summary>
+        </member>
+        <member name="F:UETools.Assets.Enums.EAssetRegistryVersion.ChangedAssetData">
+            <summary>
+            AssetData serialization format changed, versions before this are not readable.
+            </summary>
+        </member>
+        <member name="F:UETools.Assets.Enums.EAssetRegistryVersion.RemovedMD5Hash">
+            <summary>
+            Removed MD5 hash from package data.
+            </summary>
+        </member>
+        <member name="F:UETools.Assets.Enums.EAssetRegistryVersion.AddedHardManage">
+            <summary>
+            Added hard/soft manage references.
+            </summary>
+        </member>
+        <member name="F:UETools.Assets.Enums.EAssetRegistryVersion.AddedCookedMD5Hash">
+            <summary>
+            Added MD5 hash of cooked package to package data.
+            </summary>
+        </member>
+        <member name="F:UETools.Assets.Enums.EAssetRegistryVersion.VersionPlusOne">
+            <summary>
+            Last version implemented.
+            </summary>
+        </member>
+        <member name="F:UETools.Assets.Enums.EAssetRegistryVersion.LatestVersion">
+            <summary>
+            Latest version implemented.
+            </summary>
+        </member>
+        <member name="T:UETools.Assets.Enums.ELocMetaVersion">
+            <summary>
+            Data versions for <see cref="T:UETools.Assets.LocMetaAsset">LocMeta</see> files.
+            </summary>
+        </member>
+        <member name="F:UETools.Assets.Enums.ELocMetaVersion.Initial">
+            <summary>
+            Initial format.
+            </summary>
+        </member>
+        <member name="T:UETools.Assets.Enums.ELocResVersion">
+            <summary>
+            Data versions for <see cref="T:UETools.Assets.LocResAsset">LocRes</see> files.
+            </summary>
+        </member>
+        <member name="F:UETools.Assets.Enums.ELocResVersion.Legacy">
+            <summary>
+            Legacy format file.
+            </summary>
+            <remarks>Will be missing the magic number.</remarks>
+        </member>
+        <member name="F:UETools.Assets.Enums.ELocResVersion.Compact">
+            <summary>
+            Compact format file.
+            </summary>
+            <remarks>Strings are stored in a LUT to avoid duplication.</remarks>
+        </member>
+        <member name="F:UETools.Assets.Enums.ELocResVersion.Optimized">
+            <summary>
+            Namespaces/keys are pre-hashed, we know the number of elements up-front, and the number of references for each string in the LUT (to allow stealing).
+            </summary>
+        </member>
+    </members>
+</doc>

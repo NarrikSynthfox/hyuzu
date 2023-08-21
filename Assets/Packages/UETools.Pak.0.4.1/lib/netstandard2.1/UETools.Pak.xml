@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>UETools.Pak</name>
+    </assembly>
+    <members>
+        <member name="T:UETools.Pak.Enums.ECompressionFlags">
+            <summary>
+            Flags controlling compression and decompression.
+            </summary>
+        </member>
+        <member name="F:UETools.Pak.Enums.ECompressionFlags.COMPRESS_None">
+            <summary>
+            No compression.
+            </summary>
+        </member>
+        <member name="F:UETools.Pak.Enums.ECompressionFlags.COMPRESS_ZLIB">
+            <summary>
+            Compress with ZLIB.
+            </summary>
+        </member>
+        <member name="F:UETools.Pak.Enums.ECompressionFlags.COMPRESS_GZIP">
+            <summary>
+            Compress with GZIP.
+            </summary>
+        </member>
+        <member name="F:UETools.Pak.Enums.ECompressionFlags.COMPRESS_Custom">
+            <summary>
+            Compress with user defined callbacks.
+            </summary>
+        </member>
+        <member name="F:UETools.Pak.Enums.ECompressionFlags.COMPRESS_BiasMemory">
+            <summary>
+            Prefer compression that compresses smaller.
+            </summary>
+            <remarks>Only valid for compression.</remarks>
+        </member>
+        <member name="F:UETools.Pak.Enums.ECompressionFlags.COMPRESS_BiasSpeed">
+            <summary>
+            Prefer compression that compresses faster.
+            </summary>
+            <remarks>Only valid for compression.</remarks>
+        </member>
+        <member name="T:UETools.Pak.Interfaces.IAesKeyProvider">
+            <summary>
+            Interface for providing AES encryption/decryption key.
+            </summary>
+        </member>
+        <member name="P:UETools.Pak.Interfaces.IAesKeyProvider.DecryptionKey">
+            <summary>
+            Base64 encoded encryption key.
+            </summary>
+        </member>
+        <member name="T:UETools.Pak.PakEntry">
+            <summary>
+            Virtual file system entry in pak file.
+            </summary>
+        </member>
+    </members>
+</doc>
