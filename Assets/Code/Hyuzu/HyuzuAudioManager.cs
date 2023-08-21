@@ -8,20 +8,20 @@ public class HyuzuAudioManager : MonoBehaviour
     public List<AudioSource> activeSources;
     public bool previewing;
 
-    public void PreviewSong(Song song) {
+    public void PreviewSong(HyuzuSong song) {
         if (!previewing) {
             InitSongCells(song);
         }
     }
 
-    void InitSongCells(Song song) {
+    void InitSongCells(HyuzuSong song) {
         InitBeatClip(song);
         InitBassClip(song);
         InitLoopClip(song);
         InitLeadClip(song);
     }
 
-    void InitBeatClip(Song song) {
+    void InitBeatClip(HyuzuSong song) {
         if(song.beat.clips.Length != 0) {
             GameObject beatObj = new GameObject("Beat");
             beatObj.transform.parent = transform;
@@ -44,7 +44,7 @@ public class HyuzuAudioManager : MonoBehaviour
         }  else if (song.beat.clips.Length == 0 || song.beat.clips == null) previewing = false;
     }
 
-    void InitBassClip(Song song) {
+    void InitBassClip(HyuzuSong song) {
         if(song.bass.clips.Length != 0) {
             GameObject bassObj = new GameObject("Bass");
             bassObj.transform.parent = transform;
@@ -67,7 +67,7 @@ public class HyuzuAudioManager : MonoBehaviour
         } else if (song.bass.clips.Length == 0 || song.bass.clips == null) previewing = false;
     }
 
-    void InitLoopClip(Song song) {
+    void InitLoopClip(HyuzuSong song) {
         if (song.loop.clips.Length != 0) {
             GameObject loopObj = new GameObject("Loop");
             loopObj.transform.parent = transform;
@@ -90,7 +90,7 @@ public class HyuzuAudioManager : MonoBehaviour
         } else if (song.loop.clips.Length == 0 || song.loop.clips == null) previewing = false;
     }
 
-      void InitLeadClip(Song song) {
+      void InitLeadClip(HyuzuSong song) {
         if (song.lead.clips.Length != 0) {
             GameObject leadObj = new GameObject("Lead");
             leadObj.transform.parent = transform;

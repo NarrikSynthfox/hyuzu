@@ -7,7 +7,7 @@ using Hyuzu;
 
 public class SongViewer : MonoBehaviour
 {
-    public Song song;
+    public HyuzuSong song;
     [Space]
     public Image img;
     public TMP_Text text;
