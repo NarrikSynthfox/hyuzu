@@ -17,7 +17,7 @@ namespace Hyuzu {
             Ab = 8,
             A = 9,
             Bb = 10,
-            B = 11
+            B = 11,
         }
 
         public enum Modes {
@@ -48,6 +48,13 @@ namespace Hyuzu {
             Sampler,
             Horns,
             Strings
+        }
+
+        public enum CelType {
+            Beat,
+            Bass,
+            Loop,
+            Lead
         }
 
         public enum KeymapPreset {

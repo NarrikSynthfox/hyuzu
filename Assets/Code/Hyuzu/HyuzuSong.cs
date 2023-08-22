@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Hyuzu;
+using System;
 
 namespace Hyuzu {
     [System.Serializable]
@@ -61,6 +62,8 @@ namespace Hyuzu {
         public HyuzuEnums.Keys key;
         public HyuzuEnums.Modes mode;
 
+        public Dictionary<HyuzuEnums.Keys, int> transposes;
+
         [Space]
 
         public Sprite cover;
@@ -92,6 +95,15 @@ namespace Hyuzu {
                 }
             }
             return null;
+        }
+
+        public HyuzuSong() {
+            transposes = new Dictionary<HyuzuEnums.Keys, int>();
+
+            for (int i = 0; i < (int)HyuzuEnums.Keys.B; i++)
+            {
+                transposes.Add((HyuzuEnums.Keys)i, ((int)key + 1 - i + 1));
+            }
         }
     }
 }
