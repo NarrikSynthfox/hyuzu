@@ -31,7 +31,7 @@ namespace Hyuzu {
             Rock,
             Pop,
             RnB,
-            HipHopRap,
+            HipHop,
             Dance,
             International,
             AlternativeIndie,

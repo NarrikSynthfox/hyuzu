@@ -48,8 +48,9 @@ public class SongInChart : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     public void Start () {
         if (loadFromPak) {
             song = FindObjectOfType<HyuzuPakManager>().TurnPAKFileIntoSong(Application.streamingAssetsPath + "/" + pakName);
+            songCover.transform.localScale = new Vector2(1f, -1f);
         }
-        
+
         instrumentContainer.alpha = 0;
         songCover.sprite = song.cover;
 
@@ -60,11 +61,6 @@ public class SongInChart : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
         songTitle.text = song.songName;
         songArtist.text = song.artist;
-        
-        for (int i = 0; i < song.transposes.Count; i++)
-        {
-            Debug.Log($"Key: {(HyuzuEnums.Keys)i},Value: {song.transposes[(HyuzuEnums.Keys)i]}");
-        }
     }
 
     public void Update() {
