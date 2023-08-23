@@ -15,8 +15,8 @@ using Unity.Mathematics;
 namespace Hyuzu {
     public class HyuzuPakManager : MonoBehaviour
     {
-        int offset;
-        int offsetUexp;
+        public int offset;
+        public int offsetUexp;
 
         byte[] inData;
         byte[] inDataUexp;
@@ -57,7 +57,6 @@ namespace Hyuzu {
             byte[] buffer = new byte[length];
             Array.Copy(inDataUexp, offsetUexp, buffer, 0, length);
             offsetUexp += length;
-
             GCHandle handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
             T result = Marshal.PtrToStructure<T>(handle.AddrOfPinnedObject());
             handle.Free();
@@ -110,28 +109,16 @@ namespace Hyuzu {
                     }
                 }
 
-                inData = reader.AbsoluteIndex[("Fuser/Content/DLC/Songs/" + shortName + "/Meta_" + shortName + ".uasset")].ReadBytes().ToArray();
-                SetupUASset(inData);
+                SetupFuserFile(reader, "Fuser/Content/DLC/Songs/" + shortName + "/Meta_" + shortName, false);
+                SetupFuserFile(reader, "Fuser/Content/Audio/Songs/" + shortName + "/" + shortName + "bs/Meta_" + shortName + "bs", true);
 
-                inDataUexp = reader.AbsoluteIndex[("Fuser/Content/DLC/Songs/" + shortName + "/Meta_" + shortName + ".uexp")].ReadBytes().ToArray();
-                SetupUExp(inDataUexp, names, imports, exports);
-
-                offset = 0;
-                offsetUexp = 0;
-
-                inData = reader.AbsoluteIndex[("Fuser/Content/Audio/Songs/" + shortName + "/" + shortName + "bs/Meta_" + shortName + "bs.uasset")].ReadBytes().ToArray();
-                SetupUASset(inData);
-
-                inDataUexp = reader.AbsoluteIndex[("Fuser/Content/Audio/Songs/" + shortName + "/" + shortName + "bs/Meta_" + shortName + "bs.uexp")].ReadBytes().ToArray();
-                SetupUExp(inDataUexp, names, imports, exports);
-
-
-                song.songName = (string)songMetadata["Title"];
+                song.songName = songMetadata["Title"].ToString();
                 song.artist = (string)songMetadata["Artist"];
                 song.year = (int)songMetadata["Year"];
-                
-                var genreString = songMetadata["Genre"].ToString().Replace("EGenre::", String.Empty);
 
+                song.BPM = (int)songMetadata["BPM"];
+
+                var genreString = songMetadata["Genre"].ToString().Replace("EGenre::", String.Empty);
                 switch (genreString) {
                     case "Classical":
                         song.genre = HyuzuEnums.Genres.Classical;
@@ -169,9 +156,27 @@ namespace Hyuzu {
                         song.genre = HyuzuEnums.Genres.Misc;
                     break;
                 }
+
+                var keyString = songMetadata["Key"].ToString().Replace("EKey::", String.Empty);
             }
 
             return song;
+        }
+
+        public void SetupFuserFile(PakFile reader, string path, bool checkAfterNone) {
+            inData = null;
+            inDataUexp = null;
+
+            inData = reader.AbsoluteIndex[(path + ".uasset")].ReadBytes().ToArray();
+            SetupUASset(inData);
+
+            inDataUexp = reader.AbsoluteIndex[(path + ".uexp")].ReadBytes().ToArray();
+            SetupUExp(inDataUexp, names, imports, exports, checkAfterNone);
+
+            Debug.Log("Offset: " + offsetUexp);
+
+            offset = 0;
+            offsetUexp = 0;
         }
 
         public void SetupUASset (byte[] inData) {
@@ -229,6 +234,8 @@ namespace Hyuzu {
                 offset += (int)strlen;
                 uint flags = structRead<uint>(4);
 
+                //Debug.Log(Encoding.UTF8.GetString(strdata).Replace("\0", String.Empty));
+
                 names[name] = Tuple.Create((int)strlen, strdata, (int)flags);
             }
 
@@ -274,15 +281,26 @@ namespace Hyuzu {
             offset += 4;
         }
 
-        public void SetupUExp(byte[] inData, Dictionary<int, Tuple<int, byte[], int>> names, object[][] imports, byte[][] exports) {
+        public void SetupUExp(byte[] inData, Dictionary<int, Tuple<int, byte[], int>> names, object[][] imports, byte[][] exports, bool checkAfterNone) {
+            bool check = checkAfterNone;
             while (offsetUexp <= inDataUexp.Length) {
                 byte[] nameIdBytes = names[(int)structReadUexp<sbyte>(8)].Item2;
                 string nameId = Encoding.UTF8.GetString(nameIdBytes).Replace("\0", String.Empty);
 
-                Debug.Log(nameId);
+                if(nameId == "None") {
+                    if(offsetUexp + 8 >= inData.Length) {
+                        Debug.Log("FUCK! ABORT! ABORT");
+                        break;
+                    } else if (check) {
+                        Debug.Log("Continue as planned");
+                        Debug.Log(offsetUexp);
+                        nameIdBytes = names[(int)structReadUexp<sbyte>(8)].Item2;
+                        nameId = Encoding.UTF8.GetString(nameIdBytes).Replace("\0", String.Empty);
+                        check = false;
+                    }
+                }
 
-                if(nameId == "None")
-                    break;
+                Debug.Log(nameId);
 
                 byte[] classIdBytes = names[(int)structReadUexp<sbyte>(8)].Item2;
                 string classIdString = Encoding.UTF8.GetString(classIdBytes).Replace("\0", String.Empty);
@@ -295,7 +313,7 @@ namespace Hyuzu {
                     offsetUexp += 1;
 
                     byte[] nameBytes_ = names[(int)structReadUexp<uint>(4)].Item2;
-                    string name_ = Encoding.UTF8.GetString(nameBytes_);
+                    string name_ = Encoding.UTF8.GetString(nameBytes_).Replace("\0", String.Empty);;
                     uint nameUnk = structReadUexp<uint>(4);
 
                     songMetadata.Add(nameId, name_);
@@ -303,7 +321,7 @@ namespace Hyuzu {
                     offsetUexp += 1;
 
                     byte[] nameBytes_ = names[(int)structReadUexp<uint>(4)].Item2;
-                    string name_ = Encoding.UTF8.GetString(nameBytes_);
+                    string name_ = Encoding.UTF8.GetString(nameBytes_).Replace("\0", String.Empty);;
                     ulong value = structReadUexp<ulong>(8);
 
                     songMetadata.Add(nameId, name_);
@@ -327,14 +345,14 @@ namespace Hyuzu {
                                 byte[] strData = new byte[strLen];
                                 Array.Copy(inDataUexp, offsetUexp, strData, 0, strLen);
 
-                                string u16Str = Encoding.UTF8.GetString(strData);
+                                string u16Str = Encoding.UTF8.GetString(strData).Replace("\0", String.Empty);;
                                 strings.Add(u16Str);
                                 songMetadata.Add(nameId, u16Str);
                             } else {
                                 byte[] strData = new byte[strLen];
                                 Array.Copy(inDataUexp, offsetUexp, strData, 0, strLen);
 
-                                string u16Str = Encoding.UTF8.GetString(strData);
+                                string u16Str = Encoding.UTF8.GetString(strData).Replace("\0", String.Empty);;
                                 strings.Add(u16Str);
                                 songMetadata.Add(nameId, u16Str);
                             }
@@ -357,7 +375,23 @@ namespace Hyuzu {
                             object[] value = imports[(int)valueIndex];
                             values.Add(value);
                         }
+                    } else if(aClassString == "FloatProperty") {
+                        for (int i = 0; i < numValues; i++)
+                        {
+                            float value = structReadUexp<float>(4);
+                            values.Add(value);
+                        }
+                    } else if(aClassString == "SoftObjectProperty") {
+                        for (int i = 0; i < numValues; i++)
+                        {
+                            offsetUexp += 1;
+                            string name_ = Encoding.UTF8.GetString(names[(int)structReadUexp<uint>(4)].Item2).Replace("\0", String.Empty);
+                            float value = structReadUexp<uint>(8);
+                            values.Add(value);
+                        }
                     }
+
+                    songMetadata.Add(nameId, values);
                 } else if (classIdString == "EnumProperty") {
                     string enumType = Encoding.UTF8.GetString(names[structReadUexp<int>(8)].Item2).Replace("\0", String.Empty);
                     offsetUexp += 1;
@@ -366,6 +400,10 @@ namespace Hyuzu {
                 } else if (classIdString == "IntProperty") {
                     offsetUexp += 1;
                     int value = structReadUexp<int>(4);
+                    songMetadata.Add(nameId, value);
+                } else if (classIdString == "ObjectProperty") {
+                    offsetUexp += 1;
+                    long value = structReadUexp<int>(4) ^ 0xffffffff;
                     songMetadata.Add(nameId, value);
                 } else if (classIdString == "StructProperty") {
                     var curOffset = offsetUexp;
@@ -380,11 +418,27 @@ namespace Hyuzu {
                             offsetUexp += 8;
                             int value = structReadUexp<sbyte>(4);
                             offsetUexp += 9;
-                            Debug.Log("Key: " + key + ", value: " + value);
+                            //Debug.Log("Key: " + key + ", value: " + value);
                             songMetadata.Add("Transposes " + key, value);
                         }
                     }
-                }
+                } else if (classIdString == "mReferencedChlidAssets") {
+                    var refType = Encoding.UTF8.GetString(names[structReadUexp<int>(8)].Item2).Replace("\0", String.Empty);
+                    Debug.Log(refType);
+
+                    if (refType == "HmxMidiFileAsset") {
+                        structReadUexp<int>(8);
+                        offsetUexp += 1;
+                        structReadUexp<int>(4);
+                        structReadUexp<int>(4);
+                        structReadUexp<int>(4);
+                        structReadUexp<int>(4);
+                        structReadUexp<int>(4);
+                        structReadUexp<int>(4);
+                        structReadUexp<int>(4);
+                        structReadUexp<int>(4);
+                    }
+                } 
             }
         }
     }

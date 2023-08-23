@@ -98,11 +98,13 @@ namespace Hyuzu {
         }
 
         public HyuzuSong() {
-            transposes = new Dictionary<HyuzuEnums.Keys, int>();
+            if (transposes == null) {
+                transposes = new Dictionary<HyuzuEnums.Keys, int>();
 
-            for (int i = 0; i < (int)HyuzuEnums.Keys.B; i++)
-            {
-                transposes.Add((HyuzuEnums.Keys)i, ((int)key + 1 - i + 1));
+                for (int i = 0; i < (int)HyuzuEnums.Keys.B; i++)
+                {
+                    transposes.Add((HyuzuEnums.Keys)i, ((int)key + 1 - i + 1));
+                }
             }
         }
     }

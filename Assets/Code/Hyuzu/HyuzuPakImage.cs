@@ -54,6 +54,9 @@ namespace Hyuzu {
                 mip.height = BitConverter.ToUInt32(readerM.ReadBytes(4));
 
                 footer = readerM.ReadBytes((int)footerSize);
+
+                readerM.Close();
+                stream.Close();
             }
         }
     }
