@@ -8,3 +8,9 @@ Planned features include:
 - Adjustable size for crates
 - UI enhancements
 - More
+
+# Credits
+- [Narrik Synthfox](https://github.com/NarrikSynthfox) for helping me at FUSER/Unreal Engine's filetypes
+- [UETools](https://github.com/UETools/UETools) for reading Unreal Engine stuff
+- [Acai](https://www.youtube.com/@acai28) for being a MASSIVE inspiration and just overall being a great guy
+- The FUSER community for the feedback and support
