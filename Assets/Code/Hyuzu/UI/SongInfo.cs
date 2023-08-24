@@ -39,12 +39,7 @@ public class SongInfo : MonoBehaviour
     }
 
     public void SwitchSongAndToggle(HyuzuSong song) {
-        StartCoroutine(ToggleProcess(song));
-    }
-
-    IEnumerator ToggleProcess(HyuzuSong song) {
         Hide();
-        yield return new WaitUntil(() => GetComponent<CanvasGroup>().alpha == 0);
         this.song = song;
         Show();
     }
@@ -59,9 +54,10 @@ public class SongInfo : MonoBehaviour
         loopIcon.sprite = HyuzuAssetManager.GetInstrumentIcon(song.loop.instrument);
         leadIcon.sprite = HyuzuAssetManager.GetInstrumentIcon(song.lead.instrument);
 
-        songInfo.text = song.artist + "\n" + song.songName + "\n" + song.key + " " + song.mode + "\n" + song.BPM + "\n\n" + ((song.creator == "") ? "Unknown" : song.creator);
+        string songTitle = (song.songName.Length > 35) ? song.songName.Substring(0, 20) + "..." : song.songName;
+        songInfo.text = song.artist + "\n" + songTitle + "\n" + song.key + " " + song.mode + "\n" + song.BPM + "\n\n" + ((song.creator == "") ? "Unknown" : song.creator);
 
-        transform.DOLocalMoveY(-141f, 0.15f);
+        transform.DOLocalMoveY(-178.2f, 0.15f);
         GetComponent<CanvasGroup>().DOFade(1f, 0.15f);
     }
 
