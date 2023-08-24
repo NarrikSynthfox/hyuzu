@@ -84,6 +84,8 @@ namespace Hyuzu {
         [SerializeField]
         public ClipInfo lead;
 
+        public bool fromPak = false;
+
         public AudioClip GetPreviewClip(ClipInfo songCell) {
             foreach (Keyzone item in songCell.keyzonesClips)
             {

@@ -9,7 +9,7 @@ public class MenuLightsManager : MonoBehaviour
 
     void Start()
     {
-        for (int i = 0; i < GetComponentsInChildren<Light>().Length - 1; i++)
+        for (int i = 0; i < GetComponentsInChildren<Light>().Length; i++)
         {
             lightPositions[i] = GetComponentsInChildren<Light>()[i].transform.position;
         }
@@ -18,12 +18,12 @@ public class MenuLightsManager : MonoBehaviour
     }
 
    IEnumerator LightPosSwitch() {
-    for (int i = 0; i < GetComponentsInChildren<Light>().Length - 1; i++)
+    for (int i = 0; i < GetComponentsInChildren<Light>().Length; i++)
     {
         float time = Random.RandomRange(15, 20);
 
-        GetComponentsInChildren<Light>()[i].transform.DOMoveX(Random.Range(0.9f, 9.1f), time);
-        GetComponentsInChildren<Light>()[i].transform.DOMoveY(Random.Range(2.848807f, 7.678807f), time);
+        GetComponentsInChildren<Light>()[i].transform.DOMoveX(GetComponentsInChildren<Light>()[i].transform.position.x + Random.Range(-2f, 2f), time);
+        GetComponentsInChildren<Light>()[i].transform.DOMoveY(GetComponentsInChildren<Light>()[i].transform.position.y + Random.Range(-2f, 2f), time);
 
         yield return new WaitForSeconds(time);
         StartCoroutine(LightPosSwitch());

@@ -8,5 +8,8 @@ namespace Hyuzu {
         public static Sprite GetInstrumentIcon(HyuzuEnums.Instruments instrument) {
             return Resources.Load<Sprite>("InstrumentIcons/" + instrument.ToString().ToLower());
         }
+        public static Sprite GetMissingAlbumArtIcon() {
+            return Resources.Load<Sprite>("AlbumArtUnknown");
+        }
     }
 }

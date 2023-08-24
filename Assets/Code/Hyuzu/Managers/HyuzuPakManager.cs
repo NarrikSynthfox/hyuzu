@@ -166,8 +166,11 @@ namespace Hyuzu {
                         song.genre = HyuzuEnums.Genres.Misc;
                     break;
                 }
+
+                GetMoggsFromInstrument(reader, "ld");
             }
 
+            song.fromPak = true;
             return song;
         }
 
@@ -198,27 +201,28 @@ namespace Hyuzu {
 
             Debug.Log(moggs);
 
-            while (moggs > 0) {
-                int msrIndex = Array.IndexOf(fusionData, Encoding.UTF8.GetBytes("MoggSampleResource"));
-                
+            while (moggs > 0)
+            {
+                int msrIndex = Array.IndexOf(fusionData, Encoding.ASCII.GetBytes("MoggSampleResource"));
+
                 if (msrIndex < 0)
                 {
                     break; // No more occurrences
                 }
-                
+
                 int fns = msrIndex - 10;
                 int fnl = 1;
-                
+
                 while (fusionData[fns] != (byte)'/')
                 {
                     fns--;
                     fnl++;
                 }
-                
+
                 fns++;
                 fnl--;
-                
-                int msrHeadIndex = Array.IndexOf(fusionData, Encoding.UTF8.GetBytes("mogs"), msrIndex);
+
+                int msrHeadIndex = Array.IndexOf(fusionData, Encoding.ASCII.GetBytes("mogs"), msrIndex);
 
                 int unk1, srate, chan, samples, unk2, chan2, size;
 
@@ -239,17 +243,34 @@ namespace Hyuzu {
                 byte[] moggData = new byte[size];
                 Array.Copy(fusionData, moggStartIndex, moggData, 0, size);
 
-                // decrypting data
-
                 int headlen = BitConverter.ToInt32(moggData, 4);
                 int mapver = BitConverter.ToInt32(moggData, 8);
                 int seek = BitConverter.ToInt32(moggData, 12);
                 int entries = BitConverter.ToInt32(moggData, 16);
 
+                ValueTuple<int, int>[] oggmap = new ValueTuple<int, int>[entries];
+                for (int entry = 0; entry < entries; entry++)
+                {
+                    int entryOffset = 20 + (8 * entry);
+                    int oggOffset = BitConverter.ToInt32(moggData, entryOffset);
+                    int oggLength = BitConverter.ToInt32(moggData, entryOffset + 4);
+                    oggmap[entry] = (oggOffset, oggLength);
+                }
 
-                // Update moggs count and continue processing
+                byte[] aesiv = new byte[16];
+                Array.Copy(moggData, 20 + (8 * entries), aesiv, 0, 16);
+
+                byte[] oggData = new byte[moggData.Length - (20 + (8 * entries) + 16)];
+                Array.Copy(moggData, 20 + (8 * entries) + 16, oggData, 0, oggData.Length);
+
+                string filename = Encoding.ASCII.GetString(fusionData, fns, fnl - 2).Replace("\0", String.Empty); // Assuming Python's [2:-1] slice is equivalent
+                using (FileStream outFileStream = new FileStream("C:\\moggs\\" + filename, FileMode.Create))
+                {
+                    outFileStream.Write(oggData, 0, oggData.Length);
+                }
+
+                // Update fusionData and moggs count
                 moggs--;
-                count++;
             }
 
             return clips;

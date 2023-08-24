@@ -52,7 +52,12 @@ public class SongInChart : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         }
 
         instrumentContainer.alpha = 0;
+
         songCover.sprite = song.cover;
+        if(song.cover == null) { 
+            songCover.sprite = HyuzuAssetManager.GetMissingAlbumArtIcon();
+            songCover.transform.DOScaleY(1f, 0f);
+        }
 
         beatIcon.sprite = HyuzuAssetManager.GetInstrumentIcon(song.beat.instrument);
         bassIcon.sprite = HyuzuAssetManager.GetInstrumentIcon(song.bass.instrument);
