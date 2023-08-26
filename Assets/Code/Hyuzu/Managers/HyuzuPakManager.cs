@@ -1,16 +1,10 @@
 using System;
 using System.IO;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using UETools.Pak;
-using Newtonsoft.Json;
-using System.Text.Json.Serialization;
-using System.CodeDom.Compiler;
 using System.Runtime.InteropServices;
 using System.Text;
-using Unity.Mathematics;
 
 namespace Hyuzu {
     public class HyuzuPakManager : MonoBehaviour
@@ -45,6 +39,19 @@ namespace Hyuzu {
             byte[] buffer = new byte[length];
             Array.Copy(inData, offset, buffer, 0, length);
             offset += length;
+
+            GCHandle handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
+            T result = Marshal.PtrToStructure<T>(handle.AddrOfPinnedObject());
+            handle.Free();
+
+            return result;
+        }
+
+        T structRead<T>(byte[] data, int offset_, int length)
+        {
+            byte[] buffer = new byte[length];
+            Array.Copy(data, offset_, buffer, 0, length);
+            offset_ += length;
 
             GCHandle handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
             T result = Marshal.PtrToStructure<T>(handle.AddrOfPinnedObject());
@@ -167,110 +174,175 @@ namespace Hyuzu {
                     break;
                 }
 
-                GetMoggsFromInstrument(reader, "ld");
+                GetAudio(ref song.beat, reader, "bt");
+                GetAudio(ref song.bass, reader, "bs");
+                GetAudio(ref song.loop, reader, "lp");
+                GetAudio(ref song.lead, reader, "ld");
+                //Debug.Log("MOGG Length: " + clips[0].Length);
             }
 
             song.fromPak = true;
             return song;
         }
 
-        AudioClip[] GetMoggsFromInstrument(PakFile reader, string instrument) {
+        public void GetAudio(ref ClipInfo info, PakFile reader, string instrument) {
+            #if HYUZU_PAK_AUDIO
+            List<Hyuzu.HyuzuMogg> clipsLoop = GetMoggsFromInstrument(reader, instrument);
+
+            info.clips = new AudioClip[clipsLoop.Count];
+            info.keyzonesClips = new Keyzone[clipsLoop.Count];
+
+            HyuzuEnums.KeymapPreset[] preset_ = new HyuzuEnums.KeymapPreset[clipsLoop.Count];
+            int[] rootNotes = new int[clipsLoop.Count];
+            int[] maxNote = new int[clipsLoop.Count];
+            bool[] unpitched = new bool[clipsLoop.Count];
+
+            for (int i = 0; i < clipsLoop.Count; i++)
+            {
+                int index = BitConverter.ToInt32(clipsLoop[i].data, 4);
+
+                byte[] oggData = new byte[clipsLoop[i].data.Length - index];
+                Array.Copy(clipsLoop[i].data, index, oggData, 0, oggData.Length);
+
+                using( var vorbis = new NVorbis.VorbisReader( new MemoryStream( oggData, false ) ) )
+                {
+                    float[] _audioBuffer = new float[clipsLoop[i].samples * 2]; // Just dump everything
+
+                    if (clipsLoop[i].samples == 0) break;
+
+                    int read = vorbis.ReadSamples( _audioBuffer);
+                    AudioClip audioClip = AudioClip.Create("Loop", (int)(clipsLoop[i].samples * 2 / clipsLoop[i].chan), (int)clipsLoop[i].chan, (int)clipsLoop[i].srate, false);
+                    audioClip.SetData( _audioBuffer, 0 );
+                    info.clips[i] = audioClip;
+                }
+
+                /*bool keyzone = false;
+
+                if (clipsLoop[i].metadata != null) {
+                    Debug.Log(clipsLoop[i].metadata.Substring(0, 11));
+                
+                    if (clipsLoop[i].metadata.Contains("(keyzone)")) {
+                        keyzone = !keyzone;
+                    }
+
+                    if (keyzone == true) {
+                        if (clipsLoop[i].metadata.Contains("root_note ")) {
+                            int rindex = clipsLoop[i].metadata.IndexOf("root_note");
+                            string str = clipsLoop[i].metadata.Substring(rindex + 9).Split(new string [] { Environment.NewLine }, StringSplitOptions.None)[
+                                0].Replace(")", String.Empty);
+                            Debug.Log(str);
+                            rootNotes[i] = int.Parse(str);
+                        }
+                        if (clipsLoop[i].metadata.Contains("(max_note ")) {
+                            int rindex = clipsLoop[i].metadata.IndexOf("(max_note");
+                            string str = clipsLoop[i].metadata.Substring(rindex + 8, 10).Replace(")", String.Empty);
+                            Debug.Log(str);
+                            maxNote[i] = int.Parse(str);
+                        }
+                        if (clipsLoop[i].metadata.Contains("(unpitched ")) {
+                            int rindex = clipsLoop[i].metadata.IndexOf("unpitched");
+                            string str = clipsLoop[i].metadata.Substring(rindex, 10).Replace(")", String.Empty);
+                            Debug.Log(str);
+                            unpitched[i] = bool.Parse(str);
+                            keyzone = false;
+                        };
+                    }
+                }
+
+                if (rootNotes[i] == 60 && unpitched[i] == false) preset_[i] = HyuzuEnums.KeymapPreset.Major;
+                if (rootNotes[i] == 84 && unpitched[i] == false) preset_[i] = HyuzuEnums.KeymapPreset.Minor;
+                //if (rootNote == 60 && unpitched == true && maxNote == 127) preset_ = HyuzuEnums.KeymapPreset.Shared;*/
+            }
+
+            if (instrument == "bt" || info.clips.Length == 1) {
+                info.keyzonesClips[0] = new Keyzone() 
+                {
+                    label = "Shared",
+                    index = 0,
+                    preset = HyuzuEnums.KeymapPreset.Shared,
+                    unpitched = true
+                };
+            } else{
+                info.keyzonesClips[0] = new Keyzone() 
+                {
+                    label = "Major",
+                    index = 0,
+                    preset = HyuzuEnums.KeymapPreset.Major,
+                    unpitched = false
+                };
+                info.keyzonesClips[1] = new Keyzone() 
+                {
+                    label = "Minor",
+                    index = 1,
+                    preset = HyuzuEnums.KeymapPreset.Minor,
+                    unpitched = false
+                };
+            }
+            #endif
+        }
+
+        List<Hyuzu.HyuzuMogg> GetMoggsFromInstrument(PakFile reader, string instrument) {
             // get encrypted moggs
             byte[] fusionData = reader.AbsoluteIndex[("Fuser/Content/Audio/Songs/" + songMetadata["SongShortName"] + "/" + songMetadata["SongShortName"] 
                                                     + instrument + "/patches/" + songMetadata["SongShortName"] + instrument + "_fusion.uexp")].ReadBytes().ToArray();
+            List<Hyuzu.HyuzuMogg> clips = new List<Hyuzu.HyuzuMogg>();
+            int offsetF = 0;
 
-            string searchString = "MoggSampleResource";
-            int moggs = 0;
-            int count = 0;
+            MemoryStream stream = new MemoryStream(fusionData);
+            BinaryReader readerM = new BinaryReader(stream);
 
-            for (int i = 0; i < fusionData.Length - searchString.Length; i++) {
-                bool match = true;
-                for (int j = 0; j < searchString.Length; j++)
-                {
-                    if(fusionData[i + j] != searchString[j]) {
-                        match = false;
-                        break;
-                    }
+            var val1 = readerM.ReadUInt64();
+            var val2 = readerM.ReadUInt64();
+
+            var propName = readerM.ReadUInt32();
+
+            var hash = Encoding.UTF8.GetString(readerM.ReadBytes(8)).Replace("\0", String.Empty);
+
+            var nameLen = readerM.ReadUInt32();
+            var name = Encoding.UTF8.GetString(readerM.ReadBytes((int)nameLen)).Replace("\0", String.Empty);
+
+            var unk1 = readerM.ReadUInt32();
+            var unk2 = readerM.ReadUInt32();
+
+            stream.Position += 8;
+
+            Hyuzu.HyuzuMogg hMogg = new Hyuzu.HyuzuMogg();
+
+            while (true) {
+                var unk0 = readerM.ReadUInt32();
+                if (unk0 == 2653586369) break;
+
+                var fNameLen = readerM.ReadUInt32();
+                var fName = Encoding.UTF8.GetString(readerM.ReadBytes((int)fNameLen)).Replace("\0", String.Empty);
+
+                stream.Position += 4;
+
+                var fTypeLen = readerM.ReadUInt32();
+                var fType = Encoding.UTF8.GetString(readerM.ReadBytes((int)fTypeLen)).Replace("\0", String.Empty);
+
+                var totalSize = readerM.ReadUInt64();
+
+                if (fType == "FusionPatchResource") { // Assuming Python's [2:-1] slice is equivalent
+                    hMogg.metadata.ParseFusionAsset(readerM.ReadBytes((int)totalSize));
+                } else if (fType == "MoggSampleResource") {
+                    var ident = readerM.ReadUInt32();
+                    hMogg.unk1_ = readerM.ReadUInt32();
+                    hMogg.srate = readerM.ReadUInt32();
+                    hMogg.chan = readerM.ReadUInt32();
+                    hMogg.samples = readerM.ReadUInt32();
+                    hMogg.unk2_ = readerM.ReadUInt32();
+                    hMogg.chan2 = readerM.ReadUInt32();
+                    hMogg.size = readerM.ReadUInt32();
+
+                    hMogg.data = readerM.ReadBytes((int)hMogg.size);
+                    Hyuzu.HyuzuMoggManager.nativeDecrypt(hMogg.data);
+
+                    clips.Add(hMogg);
+                    
+                } else {
+                    Debug.Log("Name: " + fName + ", Type: " + fType);
+                    offset += (int)totalSize;
                 }
-                if(match) {
-                    moggs++;
-                }
-            }
-
-            AudioClip[] clips = new AudioClip[moggs];
-
-            Debug.Log(moggs);
-
-            while (moggs > 0)
-            {
-                int msrIndex = Array.IndexOf(fusionData, Encoding.ASCII.GetBytes("MoggSampleResource"));
-
-                if (msrIndex < 0)
-                {
-                    break; // No more occurrences
-                }
-
-                int fns = msrIndex - 10;
-                int fnl = 1;
-
-                while (fusionData[fns] != (byte)'/')
-                {
-                    fns--;
-                    fnl++;
-                }
-
-                fns++;
-                fnl--;
-
-                int msrHeadIndex = Array.IndexOf(fusionData, Encoding.ASCII.GetBytes("mogs"), msrIndex);
-
-                int unk1, srate, chan, samples, unk2, chan2, size;
-
-                using (MemoryStream msrStream = new MemoryStream(fusionData, msrHeadIndex + 4, 28))
-                using (BinaryReader msrReader = new BinaryReader(msrStream))
-                {
-                    unk1 = msrReader.ReadInt32();
-                    srate = msrReader.ReadInt32();
-                    chan = msrReader.ReadInt32();
-                    samples = msrReader.ReadInt32();
-                    unk2 = msrReader.ReadInt32();
-                    chan2 = msrReader.ReadInt32();
-                    size = msrReader.ReadInt32();
-                }
-
-                int moggStartIndex = Array.IndexOf(fusionData, (byte)0x0B, msrHeadIndex);
-
-                byte[] moggData = new byte[size];
-                Array.Copy(fusionData, moggStartIndex, moggData, 0, size);
-
-                int headlen = BitConverter.ToInt32(moggData, 4);
-                int mapver = BitConverter.ToInt32(moggData, 8);
-                int seek = BitConverter.ToInt32(moggData, 12);
-                int entries = BitConverter.ToInt32(moggData, 16);
-
-                ValueTuple<int, int>[] oggmap = new ValueTuple<int, int>[entries];
-                for (int entry = 0; entry < entries; entry++)
-                {
-                    int entryOffset = 20 + (8 * entry);
-                    int oggOffset = BitConverter.ToInt32(moggData, entryOffset);
-                    int oggLength = BitConverter.ToInt32(moggData, entryOffset + 4);
-                    oggmap[entry] = (oggOffset, oggLength);
-                }
-
-                byte[] aesiv = new byte[16];
-                Array.Copy(moggData, 20 + (8 * entries), aesiv, 0, 16);
-
-                byte[] oggData = new byte[moggData.Length - (20 + (8 * entries) + 16)];
-                Array.Copy(moggData, 20 + (8 * entries) + 16, oggData, 0, oggData.Length);
-
-                string filename = Encoding.ASCII.GetString(fusionData, fns, fnl - 2).Replace("\0", String.Empty); // Assuming Python's [2:-1] slice is equivalent
-                using (FileStream outFileStream = new FileStream("C:\\moggs\\" + filename, FileMode.Create))
-                {
-                    outFileStream.Write(oggData, 0, oggData.Length);
-                }
-
-                // Update fusionData and moggs count
-                moggs--;
             }
 
             return clips;

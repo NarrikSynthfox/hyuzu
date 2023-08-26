@@ -528,3 +528,7 @@ Assets/StreamingAssets/pak/All the Way/SJS_AllTheWay_P.pak.meta
 Assets/StreamingAssets/pak/All the Way/SJS_AllTheWay_P.pak
 Assets/StreamingAssets/pak/All the Way.meta
 Assets/StreamingAssets/moggs.meta
+Assets/Code/Hyuzu/MOGG/HyuzuMoggVorbisStream.cs
+Assets/Code/Hyuzu/MOGG/HyuzuMoggStreamExtensions.cs
+Assets/Code/Hyuzu/MOGG/HyuzuMoggManager.cs
+Assets/Code/Hyuzu/MOGG/HyuzuByteToIntConverter.cs

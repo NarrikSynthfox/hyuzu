@@ -22,7 +22,7 @@ public class HyuzuAudioManager : MonoBehaviour
     }
 
     void InitBeatClip(HyuzuSong song) {
-        if(song.beat.clips.Length != 0) {
+        if(song.beat.clips != null) {
             GameObject beatObj = new GameObject("Beat");
             beatObj.transform.parent = transform;
 
@@ -41,11 +41,11 @@ public class HyuzuAudioManager : MonoBehaviour
                     activeSources.Add(source);
                 }
             }
-        }  else if (song.beat.clips.Length == 0 || song.beat.clips == null) previewing = false;
+        }  else if (song.beat.clips == null) previewing = false;
     }
 
     void InitBassClip(HyuzuSong song) {
-        if(song.bass.clips.Length != 0) {
+        if(song.bass.clips != null) {
             GameObject bassObj = new GameObject("Bass");
             bassObj.transform.parent = transform;
 
@@ -64,11 +64,11 @@ public class HyuzuAudioManager : MonoBehaviour
                     activeSources.Add(source);
                 }
             }
-        } else if (song.bass.clips.Length == 0 || song.bass.clips == null) previewing = false;
+        } else if (song.bass.clips == null) previewing = false;
     }
 
     void InitLoopClip(HyuzuSong song) {
-        if (song.loop.clips.Length != 0) {
+        if (song.loop.clips != null) {
             GameObject loopObj = new GameObject("Loop");
             loopObj.transform.parent = transform;
 
@@ -87,11 +87,11 @@ public class HyuzuAudioManager : MonoBehaviour
                     activeSources.Add(source);
                 }
             }
-        } else if (song.loop.clips.Length == 0 || song.loop.clips == null) previewing = false;
+        } else if (song.loop.clips == null) previewing = false;
     }
 
       void InitLeadClip(HyuzuSong song) {
-        if (song.lead.clips.Length != 0) {
+        if (song.lead.clips != null) {
             GameObject leadObj = new GameObject("Lead");
             leadObj.transform.parent = transform;
 
@@ -110,7 +110,7 @@ public class HyuzuAudioManager : MonoBehaviour
                     activeSources.Add(source);
                 }
             }
-        } else if (song.lead.clips.Length == 0 || song.lead.clips == null) previewing = false;
+        } else if (song.lead.clips == null) previewing = false;
     }
 
     public void StopPreviewSong() {

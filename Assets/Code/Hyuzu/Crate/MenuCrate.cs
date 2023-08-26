@@ -30,8 +30,6 @@ public class MenuCrate : MonoBehaviour
 
             yield return new WaitUntil(() =>  prefab.GetComponent<SongInChart>().song != null);
 
-            Debug.Log("PAK file loaded: " + paths[i]);
-
             prefab.transform.parent = songContentsObj.transform;
         }
     }
