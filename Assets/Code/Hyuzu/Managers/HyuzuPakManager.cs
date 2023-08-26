@@ -191,33 +191,26 @@ namespace Hyuzu {
             info.clips = new AudioClip[clipsLoop.Count];
             info.keyzonesClips = new Keyzone[clipsLoop.Count];
 
-            HyuzuEnums.KeymapPreset[] preset_ = new HyuzuEnums.KeymapPreset[clipsLoop.Count];
-            int[] rootNotes = new int[clipsLoop.Count];
-            int[] maxNote = new int[clipsLoop.Count];
-            bool[] unpitched = new bool[clipsLoop.Count];
-
             for (int i = 0; i < clipsLoop.Count; i++)
             {
-                int index = BitConverter.ToInt32(clipsLoop[i].data, 4);
+                if (clipsLoop[i].data[0] == 0x0A) {
+                    int index = BitConverter.ToInt32(clipsLoop[i].data, 4);
 
-                #if HYUZU_PAK_AUDIO
+                    byte[] oggData = new byte[clipsLoop[i].data.Length - index];
+                    Array.Copy(clipsLoop[i].data, index, oggData, 0, oggData.Length);
 
-                byte[] oggData = new byte[clipsLoop[i].data.Length - index];
-                Array.Copy(clipsLoop[i].data, index, oggData, 0, oggData.Length);
+                    using( var vorbis = new NVorbis.VorbisReader( new MemoryStream( oggData, false ) ) )
+                    {
+                        float[] _audioBuffer = new float[clipsLoop[i].samples * 2]; // Just dump everything
 
-                using( var vorbis = new NVorbis.VorbisReader( new MemoryStream( oggData, false ) ) )
-                {
-                    float[] _audioBuffer = new float[clipsLoop[i].samples * 2]; // Just dump everything
+                        if (clipsLoop[i].samples == 0) break;
 
-                    if (clipsLoop[i].samples == 0) break;
-
-                    int read = vorbis.ReadSamples( _audioBuffer);
-                    AudioClip audioClip = AudioClip.Create("Loop", (int)(clipsLoop[i].samples * 2 / clipsLoop[i].chan), (int)clipsLoop[i].chan, (int)clipsLoop[i].srate, false);
-                    audioClip.SetData( _audioBuffer, 0 );
-                    info.clips[i] = audioClip;
+                        int read = vorbis.ReadSamples( _audioBuffer);
+                        AudioClip audioClip = AudioClip.Create("Loop", (int)(clipsLoop[i].samples * 2 / clipsLoop[i].chan), (int)clipsLoop[i].chan, (int)clipsLoop[i].srate, false);
+                        audioClip.SetData( _audioBuffer, 0 );
+                        info.clips[i] = audioClip;
+                    }
                 }
-
-                #endif
             }
 
             if (instrument == "bt" || info.clips.Length == 1) {
