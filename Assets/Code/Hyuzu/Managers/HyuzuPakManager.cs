@@ -186,7 +186,6 @@ namespace Hyuzu {
         }
 
         public void GetAudio(ref ClipInfo info, PakFile reader, string instrument) {
-            #if HYUZU_PAK_AUDIO
             List<Hyuzu.HyuzuMogg> clipsLoop = GetMoggsFromInstrument(reader, instrument);
 
             info.clips = new AudioClip[clipsLoop.Count];
@@ -200,6 +199,8 @@ namespace Hyuzu {
             for (int i = 0; i < clipsLoop.Count; i++)
             {
                 int index = BitConverter.ToInt32(clipsLoop[i].data, 4);
+
+                #if HYUZU_PAK_AUDIO
 
                 byte[] oggData = new byte[clipsLoop[i].data.Length - index];
                 Array.Copy(clipsLoop[i].data, index, oggData, 0, oggData.Length);
@@ -216,42 +217,7 @@ namespace Hyuzu {
                     info.clips[i] = audioClip;
                 }
 
-                /*bool keyzone = false;
-
-                if (clipsLoop[i].metadata != null) {
-                    Debug.Log(clipsLoop[i].metadata.Substring(0, 11));
-                
-                    if (clipsLoop[i].metadata.Contains("(keyzone)")) {
-                        keyzone = !keyzone;
-                    }
-
-                    if (keyzone == true) {
-                        if (clipsLoop[i].metadata.Contains("root_note ")) {
-                            int rindex = clipsLoop[i].metadata.IndexOf("root_note");
-                            string str = clipsLoop[i].metadata.Substring(rindex + 9).Split(new string [] { Environment.NewLine }, StringSplitOptions.None)[
-                                0].Replace(")", String.Empty);
-                            Debug.Log(str);
-                            rootNotes[i] = int.Parse(str);
-                        }
-                        if (clipsLoop[i].metadata.Contains("(max_note ")) {
-                            int rindex = clipsLoop[i].metadata.IndexOf("(max_note");
-                            string str = clipsLoop[i].metadata.Substring(rindex + 8, 10).Replace(")", String.Empty);
-                            Debug.Log(str);
-                            maxNote[i] = int.Parse(str);
-                        }
-                        if (clipsLoop[i].metadata.Contains("(unpitched ")) {
-                            int rindex = clipsLoop[i].metadata.IndexOf("unpitched");
-                            string str = clipsLoop[i].metadata.Substring(rindex, 10).Replace(")", String.Empty);
-                            Debug.Log(str);
-                            unpitched[i] = bool.Parse(str);
-                            keyzone = false;
-                        };
-                    }
-                }
-
-                if (rootNotes[i] == 60 && unpitched[i] == false) preset_[i] = HyuzuEnums.KeymapPreset.Major;
-                if (rootNotes[i] == 84 && unpitched[i] == false) preset_[i] = HyuzuEnums.KeymapPreset.Minor;
-                //if (rootNote == 60 && unpitched == true && maxNote == 127) preset_ = HyuzuEnums.KeymapPreset.Shared;*/
+                #endif
             }
 
             if (instrument == "bt" || info.clips.Length == 1) {
@@ -278,7 +244,6 @@ namespace Hyuzu {
                     unpitched = false
                 };
             }
-            #endif
         }
 
         List<Hyuzu.HyuzuMogg> GetMoggsFromInstrument(PakFile reader, string instrument) {
@@ -335,7 +300,9 @@ namespace Hyuzu {
                     hMogg.size = readerM.ReadUInt32();
 
                     hMogg.data = readerM.ReadBytes((int)hMogg.size);
+                    #if HYUZU_PAK_AUDIO
                     Hyuzu.HyuzuMoggManager.nativeDecrypt(hMogg.data);
+                    #endif
 
                     clips.Add(hMogg);
                     
