@@ -19,6 +19,7 @@ namespace Hyuzu {
     [System.Serializable]
     public struct ClipInfo {
         public AudioClip[] clips;
+        public HyuzuMogg[] clipsRaw;
         public AudioClip[] risers;
 
         [Space]
