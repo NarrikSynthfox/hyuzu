@@ -17,19 +17,19 @@ public class SongViewer : MonoBehaviour
 
     void Start()
     {
-        sources[0].clip = song.GetPreviewClip(song.beat);
-        sources[1].clip = song.GetPreviewClip(song.bass);
-        sources[2].clip = song.GetPreviewClip(song.loop);
-        sources[3].clip = song.GetPreviewClip(song.lead);
+        //sources[0].clip = song.GetPreviewClip(song.beat);
+        //sources[1].clip = song.GetPreviewClip(song.bass);
+        //sources[2].clip = song.GetPreviewClip(song.loop);
+        //sources[3].clip = song.GetPreviewClip(song.lead);
 
-        foreach (Keyzone zone in song.lead.keyzonesClips)
+        /*foreach (Keyzone zone in song.lead.keyzonesClips)
         {
             if (song.lead.clips[zone.index] != sources[3].clip && zone.preset == HyuzuEnums.KeymapPreset.Shared) {
                 AudioSource newSource = sources[3].gameObject.AddComponent<AudioSource>();
                 newSource.clip = song.lead.clips[zone.index];
                 sources2 = newSource;
             }
-        }
+        }*/
 
         img.sprite = song.cover;
         text.text = "<size=32>" + song.songName + "\n<size=18>by " + song.artist + "\n\n<size=26>Genre: " + song.genre + "\nBPM: " + song.BPM + "\nKey/Mode: " + song.key + " " + song.mode + "\n\nYear: " + song.year + "\n\nHold Z to preview";

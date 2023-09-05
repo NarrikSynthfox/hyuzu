@@ -60,7 +60,8 @@ namespace Hyuzu {
         public enum KeymapPreset {
             Major,
             Minor,
-            Shared
+            Shared,
+            Custom
         }
     }
 }

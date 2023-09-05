@@ -1,12 +1,43 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using Hyuzu;
+using ManagedBass;
+using ManagedBass.Mix;
 using UnityEngine;
 
 public class HyuzuAudioManager : MonoBehaviour
 {
     public List<AudioSource> activeSources;
     public bool previewing;
+
+    int[] moggStreamHandles = new int[4];
+    int[] channelHandles = new int[4];
+    int mixerHandle = 0;
+
+    public void Start() {
+        Debug.Log("[Hyuzu] Initing BASS...");
+        Bass.Configure(Configuration.IncludeDefaultDevice, true);
+
+        Bass.UpdatePeriod = 5;
+        Bass.DeviceBufferLength = 10;
+        Bass.PlaybackBufferLength = 75;
+        Bass.DeviceNonStop = true;
+
+        Bass.Configure(Configuration.UnicodeDeviceInformation, true);
+        Bass.Configure(Configuration.TruePlayPosition, 0);
+        Bass.Configure(Configuration.UpdateThreads, 2);
+        Bass.Configure(Configuration.FloatDSP, true);
+
+        Bass.Configure((Configuration) 68, 1);
+        Bass.Configure((Configuration) 70, false);
+
+        int deviceCount = Bass.DeviceCount;
+        Debug.Log($"[Hyuzu] Devices found: {deviceCount}");
+
+        if(!Bass.Init(-1, 44100, DeviceInitFlags.Default | DeviceInitFlags.Latency, IntPtr.Zero)) Debug.LogError("[Hyuzu] Error initing BASS: " + Bass.LastError);
+    }
 
     public void PreviewSong(HyuzuSong song) {
         if (!previewing) {
@@ -15,113 +46,51 @@ public class HyuzuAudioManager : MonoBehaviour
     }
 
     void InitSongCells(HyuzuSong song) {
-        InitBeatClip(song);
-        InitBassClip(song);
-        InitLoopClip(song);
-        InitLeadClip(song);
+        mixerHandle = BassMix.CreateMixerStream(44100, 2, BassFlags.Default);
+
+        if (mixerHandle == 0)
+        {
+            Debug.LogError($"Failed to init mixer: {Bass.LastError}");
+        }
+
+        StartCoroutine(LoadAndPlaySongCell(song, song.beat, 0));
+        StartCoroutine(LoadAndPlaySongCell(song, song.bass, 1));
+        StartCoroutine(LoadAndPlaySongCell(song, song.loop, 2));
+        StartCoroutine(LoadAndPlaySongCell(song, song.lead, 3));
+
+        previewing = true;
     }
 
-    void InitBeatClip(HyuzuSong song) {
-        if(song.beat.clips != null) {
-            GameObject beatObj = new GameObject("Beat");
-            beatObj.transform.parent = transform;
+    IEnumerator LoadAndPlaySongCell(HyuzuSong song, ClipInfo info, int index) {
+        int moggIndex = BitConverter.ToInt32(song.GetDefaultClip(info), 4);
+        moggStreamHandles[index] = Bass.SampleLoad(song.GetDefaultClip(info), moggIndex, song.GetDefaultClip(info).Length - moggIndex, 1, 0);
 
-            foreach (Keyzone zone in song.beat.keyzonesClips)
-            {
-                if ((int)zone.preset == (int)song.mode || zone.preset == HyuzuEnums.KeymapPreset.Shared) {
-                    GameObject zoneObj = new GameObject(zone.preset.ToString());
-                    zoneObj.transform.parent = beatObj.transform;
+        yield return new WaitUntil(() => moggStreamHandles[index] != 0);
 
-                    AudioSource source = zoneObj.AddComponent<AudioSource>();
+        if (moggStreamHandles[index] == 0)
+            Debug.LogError($"Failed to load mogg file or position: {Bass.LastError}");
 
-                    source.loop = true;
-                    source.clip = song.beat.clips[zone.index];
+        channelHandles[index] = Bass.SampleGetChannel(moggStreamHandles[index]);
+        Bass.ChannelFlags(channelHandles[index], BassFlags.Loop, BassFlags.Loop);
 
-                    if(!source.isPlaying) { source.Play(); previewing = true; } 
-                    activeSources.Add(source);
-                }
-            }
-        }  else if (song.beat.clips == null) previewing = false;
+        yield return new WaitUntil(() => moggStreamHandles[index] != 0);
+
+        if (!Bass.ChannelPlay(channelHandles[index], false)) {
+            Debug.LogError($"Failed to play: {Bass.LastError}");
+        }
     }
 
-    void InitBassClip(HyuzuSong song) {
-        if(song.bass.clips != null) {
-            GameObject bassObj = new GameObject("Bass");
-            bassObj.transform.parent = transform;
-
-            foreach (Keyzone zone in song.bass.keyzonesClips)
-            {
-                if ((int)zone.preset == (int)song.mode || zone.preset == HyuzuEnums.KeymapPreset.Shared) {
-                    GameObject zoneObj = new GameObject(zone.preset.ToString());
-                    zoneObj.transform.parent = bassObj.transform;
-
-                    AudioSource source = zoneObj.AddComponent<AudioSource>();
-
-                    source.loop = true;
-                    source.clip = song.bass.clips[zone.index];
-
-                    if(!source.isPlaying) { source.Play(); previewing = true; } 
-                    activeSources.Add(source);
-                }
-            }
-        } else if (song.bass.clips == null) previewing = false;
-    }
-
-    void InitLoopClip(HyuzuSong song) {
-        if (song.loop.clips != null) {
-            GameObject loopObj = new GameObject("Loop");
-            loopObj.transform.parent = transform;
-
-            foreach (Keyzone zone in song.loop.keyzonesClips)
-            {
-                if ((int)zone.preset == (int)song.mode || zone.preset == HyuzuEnums.KeymapPreset.Shared) {
-                    GameObject zoneObj = new GameObject(zone.preset.ToString());
-                    zoneObj.transform.parent = loopObj.transform;
-
-                    AudioSource source = zoneObj.AddComponent<AudioSource>();
-
-                    source.loop = true;
-                    source.clip = song.loop.clips[zone.index];
-
-                    if(!source.isPlaying) { source.Play(); previewing = true; } 
-                    activeSources.Add(source);
-                }
-            }
-        } else if (song.loop.clips == null) previewing = false;
-    }
-
-      void InitLeadClip(HyuzuSong song) {
-        if (song.lead.clips != null) {
-            GameObject leadObj = new GameObject("Lead");
-            leadObj.transform.parent = transform;
-
-            foreach (Keyzone zone in song.lead.keyzonesClips)
-            {
-                if ((int)zone.preset == (int)song.mode || zone.preset == HyuzuEnums.KeymapPreset.Shared) {
-                    GameObject zoneObj = new GameObject(zone.preset.ToString());
-                    zoneObj.transform.parent = leadObj.transform;
-
-                    AudioSource source = zoneObj.AddComponent<AudioSource>();
-
-                    source.loop = true;
-                    source.clip = song.lead.clips[zone.index];
-
-                    if(!source.isPlaying) { source.Play(); previewing = true; } 
-                    activeSources.Add(source);
-                }
-            }
-        } else if (song.lead.clips == null) previewing = false;
+    public void OnDestroy() {
+        Bass.Stop();
+		Bass.Free();
     }
 
     public void StopPreviewSong() {
-        if(activeSources.Count != 0) {
-            foreach (AudioSource source in activeSources)
-            {
-                source.Stop();
-                Destroy(source.transform.parent.gameObject);
-            }
-            activeSources.Clear();
-            previewing = false;
+        for (int i = 0; i < channelHandles.Length; i++)
+        {
+            Bass.ChannelStop(channelHandles[i]);
+            Bass.SampleFree(moggStreamHandles[i]);
         }
+        previewing = false;
     }
 }

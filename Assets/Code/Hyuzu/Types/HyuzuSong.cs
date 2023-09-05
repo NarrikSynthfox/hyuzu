@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Hyuzu;
 using System;
+using Unity.VisualScripting.Antlr3.Runtime;
 
 namespace Hyuzu {
     [System.Serializable]
@@ -18,8 +19,8 @@ namespace Hyuzu {
 
     [System.Serializable]
     public struct ClipInfo {
-        public AudioClip[] clips;
         public HyuzuMogg[] clipsRaw;
+        public HyuzuFusion metadata;
         public AudioClip[] risers;
 
         [Space]
@@ -87,14 +88,14 @@ namespace Hyuzu {
 
         public bool fromPak = false;
 
-        public AudioClip GetPreviewClip(ClipInfo songCell) {
+        public byte[] GetDefaultClip(ClipInfo songCell) {
             foreach (Keyzone item in songCell.keyzonesClips)
             {
                 if ((int)item.preset == (int)mode) {
-                    return songCell.clips[item.index];
+                    return songCell.clipsRaw[item.index].data;
                 }
                 else if (item.preset == HyuzuEnums.KeymapPreset.Shared) {
-                    return songCell.clips[0];
+                    return songCell.clipsRaw[0].data;
                 }
             }
             return null;
@@ -109,6 +110,11 @@ namespace Hyuzu {
                     transposes.Add((HyuzuEnums.Keys)i, ((int)key + 1 - i + 1));
                 }
             }
+
+            beat.metadata = new HyuzuFusion();
+            bass.metadata = new HyuzuFusion();
+            loop.metadata = new HyuzuFusion();
+            lead.metadata = new HyuzuFusion();
         }
     }
 }

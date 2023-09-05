@@ -532,3 +532,8 @@ Assets/Code/Hyuzu/MOGG/HyuzuMoggVorbisStream.cs
 Assets/Code/Hyuzu/MOGG/HyuzuMoggStreamExtensions.cs
 Assets/Code/Hyuzu/MOGG/HyuzuMoggManager.cs
 Assets/Code/Hyuzu/MOGG/HyuzuByteToIntConverter.cs
+*.meta
+*.pak
+*.sig
+*.meta
+*.meta
