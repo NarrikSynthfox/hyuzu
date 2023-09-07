@@ -25,6 +25,13 @@ namespace Hyuzu {
             Minor
         }
 
+        public enum DiscLength {
+            BARS_8,
+            BARS_16,
+            BARS_32,
+            BARS_64
+        }
+
         public enum Genres {
             Classical,
             Country,

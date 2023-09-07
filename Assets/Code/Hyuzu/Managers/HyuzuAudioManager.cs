@@ -5,15 +5,14 @@ using System.IO;
 using Hyuzu;
 using ManagedBass;
 using ManagedBass.Mix;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class HyuzuAudioManager : MonoBehaviour
 {
-    public List<AudioSource> activeSources;
-    public bool previewing;
+    public bool previewing, isPlaying;
 
-    int[] moggStreamHandles = new int[4];
-    int[] channelHandles = new int[4];
+    public List<int> handles = new List<int>();
     int mixerHandle = 0;
 
     public void Start() {
@@ -49,48 +48,106 @@ public class HyuzuAudioManager : MonoBehaviour
         mixerHandle = BassMix.CreateMixerStream(44100, 2, BassFlags.Default);
 
         if (mixerHandle == 0)
-        {
             Debug.LogError($"Failed to init mixer: {Bass.LastError}");
+
+        // Mixer processing threads (for some reason this attribute is undocumented in ManagedBass?)
+        Bass.ChannelSetAttribute(mixerHandle, (ChannelAttribute) 86017, 2);
+
+        LoadSongCells(song, song.beat);
+        LoadSongCells(song, song.bass);
+        LoadSongCells(song, song.loop);
+        LoadSongCells(song, song.lead);
+
+        if (!Bass.ChannelPlay(mixerHandle, true)) {
+            Debug.LogError($"Failed to play: {Bass.LastError}");
+        } else {
+            previewing = true;
+            isPlaying = true;
         }
-
-        StartCoroutine(LoadAndPlaySongCell(song, song.beat, 0));
-        StartCoroutine(LoadAndPlaySongCell(song, song.bass, 1));
-        StartCoroutine(LoadAndPlaySongCell(song, song.loop, 2));
-        StartCoroutine(LoadAndPlaySongCell(song, song.lead, 3));
-
-        previewing = true;
     }
 
-    IEnumerator LoadAndPlaySongCell(HyuzuSong song, ClipInfo info, int index) {
+    public void LoadSongCells(HyuzuSong song, ClipInfo info) {
+        StartCoroutine(LoadSongCell(song, info));
+        StartCoroutine(LoadSongMiscCell(song, info));
+    }
+
+    IEnumerator LoadSongCell(HyuzuSong song, ClipInfo info) {
+        yield return new WaitUntil(() => !isPlaying);
+
+        const BassFlags flags = BassFlags.Prescan | BassFlags.Decode | BassFlags.AsyncFile | BassFlags.Loop | (BassFlags) 64;
+
+        if (song.GetDefaultClip(info) == null)
+            yield break;
+
         int moggIndex = BitConverter.ToInt32(song.GetDefaultClip(info), 4);
-        moggStreamHandles[index] = Bass.SampleLoad(song.GetDefaultClip(info), moggIndex, song.GetDefaultClip(info).Length - moggIndex, 1, 0);
+        int handle = Bass.CreateStream(song.GetDefaultClip(info), moggIndex, song.GetDefaultClip(info).Length - moggIndex, flags);
 
-        yield return new WaitUntil(() => moggStreamHandles[index] != 0);
-
-        if (moggStreamHandles[index] == 0)
+        if (handle == 0)
             Debug.LogError($"Failed to load mogg file or position: {Bass.LastError}");
 
-        channelHandles[index] = Bass.SampleGetChannel(moggStreamHandles[index]);
-        Bass.ChannelFlags(channelHandles[index], BassFlags.Loop, BassFlags.Loop);
+        yield return new WaitUntil(() => handle != 0);
 
-        yield return new WaitUntil(() => moggStreamHandles[index] != 0);
-
-        if (!Bass.ChannelPlay(channelHandles[index], false)) {
-            Debug.LogError($"Failed to play: {Bass.LastError}");
+        if (!BassMix.MixerAddChannel(mixerHandle, handle, BassFlags.MixerChanMatrix | BassFlags.MixerChanDownMix)) {
+            Debug.Log("Couldn't add channel to mixer! Uh-oh stinky! Error: " + Bass.LastError);
+            if (!Bass.StreamFree(mixerHandle)) {
+                Debug.LogError("Failed to free stream. THIS WILL SUCK FOR MEMORY.");
+            }
+        } else {
+            handles.Add(handle);
         }
     }
 
-    public void OnDestroy() {
+    IEnumerator LoadSongMiscCell(HyuzuSong song, ClipInfo info) {
+        for (int i = 0; i < song.GetSharedClips(info).Count; i++)
+        {
+            yield return new WaitUntil(() => !isPlaying);
+
+            const BassFlags flags = BassFlags.Prescan | BassFlags.Decode | BassFlags.AsyncFile | BassFlags.Loop | (BassFlags) 64;
+
+            if (song.GetSharedClips(info)[i] == null)
+                yield break;
+
+            int moggIndex = BitConverter.ToInt32(song.GetSharedClips(info)[i], 4);
+            int handle = Bass.CreateStream(song.GetSharedClips(info)[i], moggIndex, song.GetSharedClips(info)[i].Length - moggIndex, flags);
+
+            if (handle == 0)
+                Debug.LogError($"Failed to load mogg file or position: {Bass.LastError}");
+
+            yield return new WaitUntil(() => handle != 0);
+
+            if (!BassMix.MixerAddChannel(mixerHandle, handle, BassFlags.MixerChanMatrix | BassFlags.MixerChanDownMix)) {
+                Debug.Log("Couldn't add channel to mixer! Uh-oh stinky! Error: " + Bass.LastError);
+                if (!Bass.StreamFree(mixerHandle)) {
+                    Debug.LogError("Failed to free stream. THIS WILL SUCK FOR MEMORY.");
+                }
+            } else {
+                handles.Add(handle);
+            }
+        }
+    }
+
+    public void OnApplicationQuit() {
         Bass.Stop();
 		Bass.Free();
     }
 
     public void StopPreviewSong() {
-        for (int i = 0; i < channelHandles.Length; i++)
+        if (!Bass.ChannelStop(mixerHandle)) Debug.LogError("Failed to stop stream. Error: " + Bass.LastError);
+    
+        for (int i = 0; i < handles.Count; i++)
         {
-            Bass.ChannelStop(channelHandles[i]);
-            Bass.SampleFree(moggStreamHandles[i]);
+            if (handles[i] != 0)
+                if (!Bass.StreamFree(handles[i])) Debug.LogError("Failed to free stream. Error: " + Bass.LastError); 
         }
+
+        handles.Clear();
+
+        if (!Bass.StreamFree(mixerHandle))
+            Debug.LogError("Failed to free stream. THIS WILL SUCK FOR MEMORY.");
+
+        mixerHandle = 0;
+
+        isPlaying = false;
         previewing = false;
     }
 }

@@ -74,7 +74,7 @@ public class SongInChart : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
             FindObjectOfType<HyuzuAudioManager>().PreviewSong(song);
             preview.DOFade(1f, 0.15f);
         }
-        else if(!Input.GetKey(KeyCode.Z)){
+        else if(!Input.GetKey(KeyCode.Z) && FindObjectOfType<HyuzuAudioManager>().previewing){
             FindObjectOfType<HyuzuAudioManager>().StopPreviewSong();
             preview.DOFade(0f, 0.15f);
         }
@@ -112,6 +112,6 @@ public class SongInChart : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         preview.DOFade(0f, 0.15f);
 
         touching = false;
-        FindObjectOfType<HyuzuAudioManager>().StopPreviewSong();
+        if (FindObjectOfType<HyuzuAudioManager>().previewing) FindObjectOfType<HyuzuAudioManager>().StopPreviewSong();
     }
 }

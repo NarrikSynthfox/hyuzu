@@ -18,10 +18,9 @@ namespace Hyuzu {
     }
 
     [System.Serializable]
-    public struct ClipInfo {
-        public HyuzuMogg[] clipsRaw;
-        public HyuzuFusion metadata;
-        public AudioClip[] risers;
+    public class ClipInfo {
+        public List<HyuzuMogg> clipsRaw = new List<HyuzuMogg>();
+        public HyuzuFusion metadata = new HyuzuFusion();
 
         [Space]
 
@@ -31,7 +30,11 @@ namespace Hyuzu {
         [Space]
 
         public float[] pickups;
-        public HyuzuEnums.Instruments instrument;
+        public HyuzuEnums.Instruments instrument = HyuzuEnums.Instruments.None;
+
+        [Space]
+
+        public HyuzuEnums.DiscLength discLength = HyuzuEnums.DiscLength.BARS_32;
     }
 
     [CreateAssetMenu(fileName = "Song", menuName = "Hyuzu/New Song", order = 1)]
@@ -75,16 +78,16 @@ namespace Hyuzu {
         [Space]
 
         [SerializeField]
-        public ClipInfo beat;
+        public ClipInfo beat = new ClipInfo();
 
         [SerializeField]
-        public ClipInfo bass;
+        public ClipInfo bass = new ClipInfo();
 
         [SerializeField]
-        public ClipInfo loop;
+        public ClipInfo loop = new ClipInfo();
 
         [SerializeField]
-        public ClipInfo lead;
+        public ClipInfo lead = new ClipInfo();
 
         public bool fromPak = false;
 
@@ -94,11 +97,19 @@ namespace Hyuzu {
                 if ((int)item.preset == (int)mode) {
                     return songCell.clipsRaw[item.index].data;
                 }
-                else if (item.preset == HyuzuEnums.KeymapPreset.Shared) {
-                    return songCell.clipsRaw[0].data;
-                }
             }
             return null;
+        }
+
+        public List<byte[]> GetSharedClips(ClipInfo songCell) {
+            List<byte[]> bytes = new List<byte[]>();
+            foreach (Keyzone item in songCell.keyzonesClips)
+            {
+                if (item.preset == HyuzuEnums.KeymapPreset.Shared) {
+                    bytes.Add(songCell.clipsRaw[item.index].data);
+                }
+            }
+            return bytes;
         }
 
         public HyuzuSong() {
@@ -110,11 +121,6 @@ namespace Hyuzu {
                     transposes.Add((HyuzuEnums.Keys)i, ((int)key + 1 - i + 1));
                 }
             }
-
-            beat.metadata = new HyuzuFusion();
-            bass.metadata = new HyuzuFusion();
-            loop.metadata = new HyuzuFusion();
-            lead.metadata = new HyuzuFusion();
         }
     }
 }

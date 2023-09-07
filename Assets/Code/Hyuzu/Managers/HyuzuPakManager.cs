@@ -8,7 +8,7 @@ using System.Text;
 using System.Linq;
 
 namespace Hyuzu {
-    public class HyuzuPakManager : MonoBehaviour
+    public class HyuzuPakManager
     {
         public AudioSource source;
 
@@ -175,10 +175,10 @@ namespace Hyuzu {
                     break;
                 }
 
-                GetAudio(ref song.beat, reader, "bt");
-                GetAudio(ref song.bass, reader, "bs");
-                GetAudio(ref song.loop, reader, "lp");
-                GetAudio(ref song.lead, reader, "ld");
+                GetAudio(song.beat, reader, "bt");
+                GetAudio(song.bass, reader, "bs");
+                GetAudio(song.loop, reader, "lp");
+                GetAudio(song.lead, reader, "ld");
                 //Debug.Log("MOGG Length: " + clips[0].Length);
             }
 
@@ -186,87 +186,71 @@ namespace Hyuzu {
             return song;
         }
 
-        public void GetAudio(ref ClipInfo info, PakFile reader, string instrument) {
-            List<Hyuzu.HyuzuMogg> clipsLoop = GetMoggsFromInstrument(reader, info, instrument);
+        public void GetAudio(ClipInfo info, PakFile reader, string instrument) {
+            GetMoggsFromInstrument(reader, info, instrument);
+            info.keyzonesClips = new Keyzone[info.clipsRaw.Count];
 
-            info.keyzonesClips = new Keyzone[clipsLoop.Count];
-            info.clipsRaw = clipsLoop.ToArray();
-
-            bool noAudio = false;
-
-            for (int i = 0; i < clipsLoop.Count; i++)
+            for (int j = 0; j < info.metadata.nodes.GetNode("keymap").children.Count; j++)
             {
-                if (clipsLoop[i].samples == 0) { 
-                    noAudio = true;
-                    break; 
-                }
-            }
+                if (info.metadata.nodes.GetNode("keymap").children[j]?.key == "keyzone") {
+                    HyuzuFusion.FusionNode? editAdvanced = info.metadata.nodes.GetChild("edit_advanced");
+                    HyuzuFusion.FusionNode? preset = ((HyuzuFusion.FusionNodes)info.metadata.nodes.GetNode("keymap").children[j]?.value).GetChild("keymap_preset");
 
-            if (!noAudio) {
-                for (int j = 0; j < info.metadata.nodes.GetNode("keymap").children.Count; j++)
-                {
-                    if (info.metadata.nodes.GetNode("keymap").children[j]?.key == "keyzone") {
-                        HyuzuFusion.FusionNode? editAdvanced = info.metadata.nodes.GetChild("edit_advanced");
-                        HyuzuFusion.FusionNode? preset = ((HyuzuFusion.FusionNodes)info.metadata.nodes.GetNode("keymap").children[j]?.value).GetChild("keymap_preset");
+                    string samplePath = (string)((HyuzuFusion.FusionNodes)info.metadata.nodes.GetNode("keymap").children[j]?.value).GetChild("sample_path")?.value;
+                    int samplePathIndex = int.Parse(samplePath.Substring("C:/".Length + ((string)songMetadata["SongShortName"]).Length + 3).Replace(".mogg", String.Empty));
 
-                        string samplePath = (string)((HyuzuFusion.FusionNodes)info.metadata.nodes.GetNode("keymap").children[j]?.value).GetChild("sample_path")?.value;
-                        int samplePathIndex = int.Parse(samplePath.Substring("C:/".Length + ((string)songMetadata["SongShortName"]).Length + 3).Replace(".mogg", String.Empty));
+                    float root_note = (float)((HyuzuFusion.FusionNodes)info.metadata.nodes.GetNode("keymap").children[j]?.value).GetChild("root_note")?.value;
+                    float unpitched = (float)((HyuzuFusion.FusionNodes)info.metadata.nodes.GetNode("keymap").children[j]?.value).GetChild("unpitched")?.value;
+                    
+                    float min_note = (float)((HyuzuFusion.FusionNodes)info.metadata.nodes.GetNode("keymap").children[j]?.value).GetChild("min_note")?.value;
+                    float max_note = (float)((HyuzuFusion.FusionNodes)info.metadata.nodes.GetNode("keymap").children[j]?.value).GetChild("max_note")?.value;
 
-                        float root_note = (float)((HyuzuFusion.FusionNodes)info.metadata.nodes.GetNode("keymap").children[j]?.value).GetChild("root_note")?.value;
-                        float unpitched = (float)((HyuzuFusion.FusionNodes)info.metadata.nodes.GetNode("keymap").children[j]?.value).GetChild("unpitched")?.value;
-                        
-                        float min_note = (float)((HyuzuFusion.FusionNodes)info.metadata.nodes.GetNode("keymap").children[j]?.value).GetChild("min_note")?.value;
-                        float max_note = (float)((HyuzuFusion.FusionNodes)info.metadata.nodes.GetNode("keymap").children[j]?.value).GetChild("max_note")?.value;
+                    if (editAdvanced != null || preset != null) {
+                        info.keyzonesClips = new Keyzone[info.metadata.nodes.GetNode("keymap").children.Count];
 
-                        if (editAdvanced != null || preset != null) {
-                            info.keyzonesClips = new Keyzone[info.metadata.nodes.GetNode("keymap").children.Count];
+                        float presetValue = (float)preset?.value;
+                        string presetName = (string)((HyuzuFusion.FusionNodes)info.metadata.nodes.GetNode("keymap").children[j]?.value).GetChild("zone_label")?.value;
 
-                            float presetValue = (float)preset?.value;
-                            string presetName = (string)((HyuzuFusion.FusionNodes)info.metadata.nodes.GetNode("keymap").children[j]?.value).GetChild("zone_label")?.value;
-
-                            info.keyzonesClips[samplePathIndex] = new Keyzone(){
-                                label = presetName,
-                                index = samplePathIndex,
-                                preset = (HyuzuEnums.KeymapPreset)presetValue,
-                                unpitched = unpitched == 1 ? true : false
+                        info.keyzonesClips[samplePathIndex] = new Keyzone(){
+                            label = presetName,
+                            index = samplePathIndex,
+                            preset = (HyuzuEnums.KeymapPreset)presetValue,
+                            unpitched = unpitched == 1 ? true : false
+                        };
+                    } else {
+                        if (instrument == "bt" || info.clipsRaw.Count == 1) {
+                            info.keyzonesClips[0] = new Keyzone() 
+                            {
+                                label = "Shared",
+                                index = 0,
+                                preset = HyuzuEnums.KeymapPreset.Shared,
+                                unpitched = true
                             };
-                        } else {
-                            if (instrument == "bt" || info.clipsRaw.Length == 1) {
-                                info.keyzonesClips[0] = new Keyzone() 
-                                {
-                                    label = "Shared",
-                                    index = 0,
-                                    preset = HyuzuEnums.KeymapPreset.Shared,
-                                    unpitched = true
-                                };
-                            } else{
-                                info.keyzonesClips[0] = new Keyzone() 
-                                {
-                                    label = "Major",
-                                    index = 0,
-                                    preset = HyuzuEnums.KeymapPreset.Major,
-                                    unpitched = false
-                                };
-                                info.keyzonesClips[1] = new Keyzone() 
-                                {
-                                    label = "Minor",
-                                    index = 1,
-                                    preset = HyuzuEnums.KeymapPreset.Minor,
-                                    unpitched = false
-                                };
-                            }
+                        } else{
+                            info.keyzonesClips[0] = new Keyzone() 
+                            {
+                                label = "Major",
+                                index = 0,
+                                preset = HyuzuEnums.KeymapPreset.Major,
+                                unpitched = false
+                            };
+                            info.keyzonesClips[1] = new Keyzone() 
+                            {
+                                label = "Minor",
+                                index = 1,
+                                preset = HyuzuEnums.KeymapPreset.Minor,
+                                unpitched = false
+                            };
                         }
                     }
                 }
             }
         }
 
-        List<Hyuzu.HyuzuMogg> GetMoggsFromInstrument(PakFile reader, ClipInfo info, string instrument) {
+        void GetMoggsFromInstrument(PakFile reader, ClipInfo info, string instrument) {
             // get encrypted moggs
             byte[] fusionData = reader.AbsoluteIndex[("Fuser/Content/Audio/Songs/" + songMetadata["SongShortName"] + "/" + songMetadata["SongShortName"] 
                                                     + instrument + "/patches/" + songMetadata["SongShortName"] + instrument + "_fusion.uexp")].ReadBytes().ToArray();
-            List<Hyuzu.HyuzuMogg> clips = new List<Hyuzu.HyuzuMogg>();
-            int offsetF = 0;
 
             MemoryStream stream = new MemoryStream(fusionData);
             BinaryReader readerM = new BinaryReader(stream);
@@ -319,7 +303,7 @@ namespace Hyuzu {
                     hMogg.size = readerM.ReadUInt32();
 
                     hMogg.data = readerM.ReadBytes((int)hMogg.size);
-                    Debug.Log("MoggSampleResource: " + instrument + ", " + (string)songMetadata["SongShortName"] + ", " + hMogg.size);
+                    //Debug.Log("MoggSampleResource: " + instrument + ", " + (string)songMetadata["SongShortName"] + ", " + hMogg.size);
                     
                     if(hMogg.data[0] != 10){
                         #if HYUZU_PAK_AUDIO
@@ -327,15 +311,13 @@ namespace Hyuzu {
                         #endif
                     }
 
-                    clips.Add(hMogg);
-                    
+                    info.clipsRaw.Add(hMogg);
+                    hMogg = new HyuzuMogg();     
                 } else {
                     Debug.Log("Name: " + fName + ", Type: " + fType);
                     offset += (int)totalSize;
                 }
             }
-
-            return clips;
         }
 
         void SetupInstrumentIcons(HyuzuSong song) {
