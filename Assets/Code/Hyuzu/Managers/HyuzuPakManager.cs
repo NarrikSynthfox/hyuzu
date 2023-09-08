@@ -6,6 +6,7 @@ using UETools.Pak;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Linq;
+using Unity.VisualScripting;
 
 namespace Hyuzu {
     public class HyuzuPakManager
@@ -30,10 +31,6 @@ namespace Hyuzu {
         Dictionary<string, object> bassMetadata = new Dictionary<string, object>();
         Dictionary<string, object> loopMetadata = new Dictionary<string, object>();
         Dictionary<string, object> leadMetadata = new Dictionary<string, object>();
-
-        public void Start () {
-            //OpenFile(Application.streamingAssetsPath + "/test.pak");
-        }
 
         T structRead<T>(int length)
         {
@@ -139,8 +136,15 @@ namespace Hyuzu {
                 var keyString = bassMetadata["Key"].ToString().Replace("EKey::", String.Empty);
                 song.key = (HyuzuEnums.Keys)Enum.Parse(typeof(HyuzuEnums.Keys), keyString);
 
+                song.TransposeKeys();
+
                 var modeString = bassMetadata["Mode"].ToString().Replace("EKeyMode::", String.Empty);
                 song.mode = (HyuzuEnums.Modes)Enum.Parse(typeof(HyuzuEnums.Modes), modeString);
+
+                song.beat.pickups = beatMetadata["PickupBeats"].ConvertTo<float[]>();
+                song.bass.pickups = bassMetadata["PickupBeats"].ConvertTo<float[]>();
+                song.loop.pickups = loopMetadata["PickupBeats"].ConvertTo<float[]>();
+                song.lead.pickups = leadMetadata["PickupBeats"].ConvertTo<float[]>();
 
                 SetupInstrumentIcons(song);
 

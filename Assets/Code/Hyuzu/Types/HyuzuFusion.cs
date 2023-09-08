@@ -6,7 +6,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Animations;
 
-public class HyuzuFusion : MonoBehaviour
+public class HyuzuFusion
 {
     public struct FusionNode {
         public string key;

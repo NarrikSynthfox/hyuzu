@@ -67,7 +67,7 @@ namespace Hyuzu {
         public HyuzuEnums.Keys key;
         public HyuzuEnums.Modes mode;
 
-        public Dictionary<HyuzuEnums.Keys, int> transposes;
+        public List<int> transposes;
 
         [Space]
 
@@ -114,12 +114,35 @@ namespace Hyuzu {
 
         public HyuzuSong() {
             if (transposes == null) {
-                transposes = new Dictionary<HyuzuEnums.Keys, int>();
+                transposes = new List<int>();
+                TransposeKeys();
+            }
+        }
 
-                for (int i = 0; i < (int)HyuzuEnums.Keys.B; i++)
+        public void TransposeKeys() {
+            transposes.Clear();
+
+            Func<int, int> FindIdx = key => {
+                for (int i = 0; i < 11; i++)
                 {
-                    transposes.Add((HyuzuEnums.Keys)i, ((int)key + 1 - i + 1));
+                    if (i == key) {
+                        return i;
+                    }
                 }
+                return -1;
+            };
+
+            int songKey = FindIdx((int)key);
+
+            for (int i = 0; i < 12; i++)
+            {
+                int index = FindIdx(i);
+                int offset = index - songKey;
+
+                if(offset < -6) offset += 12;
+                else if (offset > 6) offset -= 6;
+
+                transposes.Add(offset);
             }
         }
     }

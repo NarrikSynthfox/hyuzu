@@ -25,10 +25,10 @@ public class MenuCrate : MonoBehaviour
         {
             GameObject prefab = Instantiate(songInChartPrefab);
 
-            prefab.GetComponent<SongInChart>().pakName = paths[i];
-            prefab.GetComponent<SongInChart>().loadFromPak = true;
+            prefab.GetComponent<SongInCrate>().pakName = paths[i];
+            prefab.GetComponent<SongInCrate>().loadFromPak = true;
 
-            yield return new WaitUntil(() =>  prefab.GetComponent<SongInChart>().song != null);
+            yield return new WaitUntil(() => prefab.GetComponent<SongInCrate>().song != null);
 
             prefab.transform.parent = songContentsObj.transform;
         }
