@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace Hyuzu {
-    public class HyuzuEnums
+    public class Enums
     {
         public enum Keys {
             C = 0,
@@ -23,6 +23,13 @@ namespace Hyuzu {
         public enum Modes {
             Major,
             Minor
+        }
+
+        public enum DiscLength {
+            BARS_8,
+            BARS_16,
+            BARS_32,
+            BARS_64
         }
 
         public enum Genres {
@@ -60,7 +67,8 @@ namespace Hyuzu {
         public enum KeymapPreset {
             Major,
             Minor,
-            Shared
+            Shared,
+            Custom
         }
     }
 }

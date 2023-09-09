@@ -8,7 +8,7 @@ using TMPro;
 
 public class SongInfo : MonoBehaviour
 {
-    public HyuzuSong song;
+    public Song song;
 
     [Space]
 
@@ -42,7 +42,7 @@ public class SongInfo : MonoBehaviour
         }
     }
 
-    public void SwitchSongAndToggle(HyuzuSong song) {
+    public void SwitchSongAndToggle(Song song) {
         Hide();
         this.song = song;
         Show();
@@ -56,14 +56,14 @@ public class SongInfo : MonoBehaviour
         
         if (song.fromPak) songCover.transform.DOScaleY(-0.7828592f, 0f);
         if(song.cover == null) { 
-            songCover.sprite = HyuzuAssetManager.GetMissingAlbumArtIcon();
+            songCover.sprite = Hyuzu.AssetManager.GetMissingAlbumArtIcon();
             songCover.transform.DOScaleY(0.7828592f, 0f);
         }
 
-        beatIcon.sprite = HyuzuAssetManager.GetInstrumentIcon(song.beat.instrument);
-        bassIcon.sprite = HyuzuAssetManager.GetInstrumentIcon(song.bass.instrument);
-        loopIcon.sprite = HyuzuAssetManager.GetInstrumentIcon(song.loop.instrument);
-        leadIcon.sprite = HyuzuAssetManager.GetInstrumentIcon(song.lead.instrument);
+        beatIcon.sprite = Hyuzu.AssetManager.GetInstrumentIcon(song.beat.instrument);
+        bassIcon.sprite = Hyuzu.AssetManager.GetInstrumentIcon(song.bass.instrument);
+        loopIcon.sprite = Hyuzu.AssetManager.GetInstrumentIcon(song.loop.instrument);
+        leadIcon.sprite = Hyuzu.AssetManager.GetInstrumentIcon(song.lead.instrument);
 
         string songTitle = (song.songName.Length > 35) ? song.songName.Substring(0, 20) + "..." : song.songName;
         songInfo.text = song.artist + "\n" + songTitle + "\n" + song.key + " " + song.mode + "\n" + song.BPM + "\n\n" + ((song.creator == "") ? "Unknown" : song.creator);

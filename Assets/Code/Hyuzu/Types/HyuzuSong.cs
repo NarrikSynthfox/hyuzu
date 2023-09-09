@@ -1,8 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 using Hyuzu;
 using System;
+using Unity.VisualScripting.Antlr3.Runtime;
 
 namespace Hyuzu {
     [System.Serializable]
@@ -13,14 +15,13 @@ namespace Hyuzu {
         [Space]
 
         public bool unpitched;
-        public HyuzuEnums.KeymapPreset preset;
+        public Enums.KeymapPreset preset;
     }
 
     [System.Serializable]
-    public struct ClipInfo {
-        public AudioClip[] clips;
-        public HyuzuMogg[] clipsRaw;
-        public AudioClip[] risers;
+    public class ClipInfo {
+        public List<Mogg> clipsRaw = new List<Mogg>();
+        public HyuzuFusion metadata = new HyuzuFusion();
 
         [Space]
 
@@ -30,11 +31,15 @@ namespace Hyuzu {
         [Space]
 
         public float[] pickups;
-        public HyuzuEnums.Instruments instrument;
+        public Enums.Instruments instrument = Enums.Instruments.None;
+
+        [Space]
+
+        public Enums.DiscLength discLength = Enums.DiscLength.BARS_32;
     }
 
     [CreateAssetMenu(fileName = "Song", menuName = "Hyuzu/New Song", order = 1)]
-    public class HyuzuSong : ScriptableObject
+    public class Song : ScriptableObject
     {
         public string creator;
 
@@ -47,7 +52,7 @@ namespace Hyuzu {
 
         [Space]
 
-        public HyuzuEnums.Genres genre;
+        public Enums.Genres genre;
         public string subgenre;
 
         [Space]
@@ -60,10 +65,10 @@ namespace Hyuzu {
 
         [Space]
 
-        public HyuzuEnums.Keys key;
-        public HyuzuEnums.Modes mode;
+        public Enums.Keys key;
+        public Enums.Modes mode;
 
-        public Dictionary<HyuzuEnums.Keys, int> transposes;
+        public List<int> transposes;
 
         [Space]
 
@@ -74,40 +79,78 @@ namespace Hyuzu {
         [Space]
 
         [SerializeField]
-        public ClipInfo beat;
+        public ClipInfo beat = new ClipInfo();
 
         [SerializeField]
-        public ClipInfo bass;
+        public ClipInfo bass = new ClipInfo();
 
         [SerializeField]
-        public ClipInfo loop;
+        public ClipInfo loop = new ClipInfo();
 
         [SerializeField]
-        public ClipInfo lead;
+        public ClipInfo lead = new ClipInfo();
+
+        [Space]
 
         public bool fromPak = false;
+        public string jsonPath = "";
 
-        public AudioClip GetPreviewClip(ClipInfo songCell) {
+        [Space]
+
+        int lol;
+
+        public byte[] GetDefaultClip(ClipInfo songCell) {
             foreach (Keyzone item in songCell.keyzonesClips)
             {
                 if ((int)item.preset == (int)mode) {
-                    return songCell.clips[item.index];
-                }
-                else if (item.preset == HyuzuEnums.KeymapPreset.Shared) {
-                    return songCell.clips[0];
+                    return songCell.clipsRaw[item.index].data;
                 }
             }
             return null;
         }
 
-        public HyuzuSong() {
-            if (transposes == null) {
-                transposes = new Dictionary<HyuzuEnums.Keys, int>();
-
-                for (int i = 0; i < (int)HyuzuEnums.Keys.B; i++)
-                {
-                    transposes.Add((HyuzuEnums.Keys)i, ((int)key + 1 - i + 1));
+        public List<byte[]> GetSharedClips(ClipInfo songCell) {
+            List<byte[]> bytes = new List<byte[]>();
+            foreach (Keyzone item in songCell.keyzonesClips)
+            {
+                if (item.preset == Enums.KeymapPreset.Shared) {
+                    bytes.Add(songCell.clipsRaw[item.index].data);
                 }
+            }
+            return bytes;
+        }
+
+        public Song() {
+            if (transposes == null) {
+                transposes = new List<int>();
+                TransposeKeys();
+            }
+        }
+
+        public void TransposeKeys() {
+            transposes.Clear();
+
+            Func<int, int> FindIdx = key => {
+                for (int i = 0; i < 11; i++)
+                {
+                    if (i == key) {
+                        return i;
+                    }
+                }
+                return -1;
+            };
+
+            int songKey = FindIdx((int)key);
+
+            for (int i = 0; i < 12; i++)
+            {
+                int index = FindIdx(i);
+                int offset = index - songKey;
+
+                if(offset < -6) offset += 12;
+                else if (offset > 6) offset -= 6;
+
+                transposes.Add(offset);
             }
         }
     }

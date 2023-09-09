@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace Hyuzu {
-    public class HyuzuPakImage {
+    public class PakImage {
         public struct Mip {
             public UInt64 entry_identifier;
             public UInt32 flags;
