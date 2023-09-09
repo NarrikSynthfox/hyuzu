@@ -6,7 +6,7 @@ using Hyuzu;
 public class Game : MonoBehaviour
 {
     public float BPM;
-    public HyuzuEnums.Keys Key;
+    public Enums.Keys Key;
     public AudioSource[] clips;
 
     void Start()

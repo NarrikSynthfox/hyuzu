@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace Hyuzu {
-    public class HyuzuEnums
+    public class Enums
     {
         public enum Keys {
             C = 0,

@@ -9,7 +9,7 @@ using TMPro;
 
 public class SongInCrate : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    public HyuzuSong song;
+    public Song song;
 
     [Space]
 
@@ -47,7 +47,7 @@ public class SongInCrate : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     public void Start () {
         if (loadFromPak) {
-            song = new HyuzuPakManager().TurnPAKFileIntoSong(pakName);
+            song = new Hyuzu.PakManager().TurnPAKFileIntoSong(pakName);
             songCover.transform.localScale = new Vector2(1f, -1f);
         }
 
@@ -55,14 +55,14 @@ public class SongInCrate : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
         songCover.sprite = song.cover;
         if(song.cover == null) { 
-            songCover.sprite = HyuzuAssetManager.GetMissingAlbumArtIcon();
+            songCover.sprite = Hyuzu.AssetManager.GetMissingAlbumArtIcon();
             songCover.transform.DOScaleY(1f, 0f);
         }
 
-        beatIcon.sprite = HyuzuAssetManager.GetInstrumentIcon(song.beat.instrument);
-        bassIcon.sprite = HyuzuAssetManager.GetInstrumentIcon(song.bass.instrument);
-        loopIcon.sprite = HyuzuAssetManager.GetInstrumentIcon(song.loop.instrument);
-        leadIcon.sprite = HyuzuAssetManager.GetInstrumentIcon(song.lead.instrument);
+        beatIcon.sprite = Hyuzu.AssetManager.GetInstrumentIcon(song.beat.instrument);
+        bassIcon.sprite = Hyuzu.AssetManager.GetInstrumentIcon(song.bass.instrument);
+        loopIcon.sprite = Hyuzu.AssetManager.GetInstrumentIcon(song.loop.instrument);
+        leadIcon.sprite = Hyuzu.AssetManager.GetInstrumentIcon(song.lead.instrument);
 
         songTitle.text = song.songName;
         songArtist.text = song.artist;
@@ -71,11 +71,11 @@ public class SongInCrate : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     public void Update() {
         transform.DOScale(new Vector2(0.414141f, 0.414141f), 0.5f);
         if(Input.GetKey(KeyCode.Z) && touching) {
-            FindObjectOfType<HyuzuAudioManager>().PreviewSong(song);
+            FindObjectOfType<Hyuzu.AudioManager>().PreviewSong(song);
             preview.DOFade(1f, 0.15f);
         }
-        else if(!Input.GetKey(KeyCode.Z) && FindObjectOfType<HyuzuAudioManager>().previewing){
-            FindObjectOfType<HyuzuAudioManager>().StopPreviewSong();
+        else if(!Input.GetKey(KeyCode.Z) && FindObjectOfType<Hyuzu.AudioManager>().previewing){
+            FindObjectOfType<Hyuzu.AudioManager>().StopPreviewSong();
             preview.DOFade(0f, 0.15f);
         }
 
@@ -112,6 +112,6 @@ public class SongInCrate : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         preview.DOFade(0f, 0.15f);
 
         touching = false;
-        if (FindObjectOfType<HyuzuAudioManager>().previewing) FindObjectOfType<HyuzuAudioManager>().StopPreviewSong();
+        if (FindObjectOfType<Hyuzu.AudioManager>().previewing) FindObjectOfType<Hyuzu.AudioManager>().StopPreviewSong();
     }
 }

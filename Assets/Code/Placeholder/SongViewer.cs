@@ -7,7 +7,7 @@ using Hyuzu;
 
 public class SongViewer : MonoBehaviour
 {
-    public HyuzuSong song;
+    public Song song;
     [Space]
     public Image img;
     public TMP_Text text;
@@ -24,7 +24,7 @@ public class SongViewer : MonoBehaviour
 
         /*foreach (Keyzone zone in song.lead.keyzonesClips)
         {
-            if (song.lead.clips[zone.index] != sources[3].clip && zone.preset == HyuzuEnums.KeymapPreset.Shared) {
+            if (song.lead.clips[zone.index] != sources[3].clip && zone.preset == Enums.KeymapPreset.Shared) {
                 AudioSource newSource = sources[3].gameObject.AddComponent<AudioSource>();
                 newSource.clip = song.lead.clips[zone.index];
                 sources2 = newSource;

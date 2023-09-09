@@ -9,7 +9,7 @@ using System.Linq;
 using Unity.VisualScripting;
 
 namespace Hyuzu {
-    public class HyuzuPakManager
+    public class PakManager
     {
         public AudioSource source;
 
@@ -70,12 +70,12 @@ namespace Hyuzu {
             return result;
         }
 
-        public HyuzuSong TurnPAKFileIntoSong(string path) {
+        public Song TurnPAKFileIntoSong(string path) {
             inData = null;
             inDataUexp = null;
             
-            HyuzuPakImage.Texture2DFuser tex = new HyuzuPakImage.Texture2DFuser();
-            HyuzuSong song = new HyuzuSong();
+            PakImage.Texture2DFuser tex = new PakImage.Texture2DFuser();
+            Song song = new Song();
 
             FileInfo info = new FileInfo(path);
             string shortName = "";
@@ -134,12 +134,12 @@ namespace Hyuzu {
                 song.creator = "Unknown";
 
                 var keyString = bassMetadata["Key"].ToString().Replace("EKey::", String.Empty);
-                song.key = (HyuzuEnums.Keys)Enum.Parse(typeof(HyuzuEnums.Keys), keyString);
+                song.key = (Enums.Keys)Enum.Parse(typeof(Enums.Keys), keyString);
 
                 song.TransposeKeys();
 
                 var modeString = bassMetadata["Mode"].ToString().Replace("EKeyMode::", String.Empty);
-                song.mode = (HyuzuEnums.Modes)Enum.Parse(typeof(HyuzuEnums.Modes), modeString);
+                song.mode = (Enums.Modes)Enum.Parse(typeof(Enums.Modes), modeString);
 
                 song.beat.pickups = beatMetadata["PickupBeats"].ConvertTo<float[]>();
                 song.bass.pickups = bassMetadata["PickupBeats"].ConvertTo<float[]>();
@@ -151,31 +151,31 @@ namespace Hyuzu {
                 var genreString = songMetadata["Genre"].ToString().Replace("EGenre::", String.Empty);
                 switch (genreString) {
                     case "Classical":
-                        song.genre = HyuzuEnums.Genres.Classical;
+                        song.genre = Enums.Genres.Classical;
                     break;
                     case "Country":
-                        song.genre = HyuzuEnums.Genres.Country;
+                        song.genre = Enums.Genres.Country;
                     break;
                     case "Rock":
-                        song.genre = HyuzuEnums.Genres.Rock;
+                        song.genre = Enums.Genres.Rock;
                     break;
                     case "RnB":
-                        song.genre = HyuzuEnums.Genres.RnB;
+                        song.genre = Enums.Genres.RnB;
                     break;
                     case "HipHop":
-                        song.genre = HyuzuEnums.Genres.HipHop;
+                        song.genre = Enums.Genres.HipHop;
                     break;
                     case "LatinAndCarribean":
-                        song.genre = HyuzuEnums.Genres.International;
+                        song.genre = Enums.Genres.International;
                     break;
                     case "Dance":
-                        song.genre = HyuzuEnums.Genres.Dance;
+                        song.genre = Enums.Genres.Dance;
                     break;
                     case "Pop":
-                        song.genre = HyuzuEnums.Genres.Pop;
+                        song.genre = Enums.Genres.Pop;
                     break;
                     default:
-                        song.genre = HyuzuEnums.Genres.Misc;
+                        song.genre = Enums.Genres.Misc;
                     break;
                 }
 
@@ -218,7 +218,7 @@ namespace Hyuzu {
                         info.keyzonesClips[samplePathIndex] = new Keyzone(){
                             label = presetName,
                             index = samplePathIndex,
-                            preset = (HyuzuEnums.KeymapPreset)presetValue,
+                            preset = (Enums.KeymapPreset)presetValue,
                             unpitched = unpitched == 1 ? true : false
                         };
                     } else {
@@ -227,7 +227,7 @@ namespace Hyuzu {
                             {
                                 label = "Shared",
                                 index = 0,
-                                preset = HyuzuEnums.KeymapPreset.Shared,
+                                preset = Enums.KeymapPreset.Shared,
                                 unpitched = true
                             };
                         } else{
@@ -235,14 +235,14 @@ namespace Hyuzu {
                             {
                                 label = "Major",
                                 index = 0,
-                                preset = HyuzuEnums.KeymapPreset.Major,
+                                preset = Enums.KeymapPreset.Major,
                                 unpitched = false
                             };
                             info.keyzonesClips[1] = new Keyzone() 
                             {
                                 label = "Minor",
                                 index = 1,
-                                preset = HyuzuEnums.KeymapPreset.Minor,
+                                preset = Enums.KeymapPreset.Minor,
                                 unpitched = false
                             };
                         }
@@ -274,7 +274,7 @@ namespace Hyuzu {
 
             stream.Position += 8;
 
-            Hyuzu.HyuzuMogg hMogg = new Hyuzu.HyuzuMogg();
+            Hyuzu.Mogg hMogg = new Hyuzu.Mogg();
             bool gotMetadata = false;
 
             while (true) {
@@ -316,7 +316,7 @@ namespace Hyuzu {
                     }
 
                     info.clipsRaw.Add(hMogg);
-                    hMogg = new HyuzuMogg();     
+                    hMogg = new Mogg();     
                 } else {
                     Debug.Log("Name: " + fName + ", Type: " + fType);
                     offset += (int)totalSize;
@@ -324,18 +324,18 @@ namespace Hyuzu {
             }
         }
 
-        void SetupInstrumentIcons(HyuzuSong song) {
+        void SetupInstrumentIcons(Song song) {
             var bassIcon = bassMetadata["Instrument"].ToString().Replace("EInstrument::", String.Empty);
-            song.bass.instrument = (HyuzuEnums.Instruments)Enum.Parse(typeof(HyuzuEnums.Instruments), bassIcon);
+            song.bass.instrument = (Enums.Instruments)Enum.Parse(typeof(Enums.Instruments), bassIcon);
 
             var beatIcon = beatMetadata["Instrument"].ToString().Replace("EInstrument::", String.Empty);
-            song.beat.instrument = (HyuzuEnums.Instruments)Enum.Parse(typeof(HyuzuEnums.Instruments), beatIcon);
+            song.beat.instrument = (Enums.Instruments)Enum.Parse(typeof(Enums.Instruments), beatIcon);
 
             var loopIcon = loopMetadata["Instrument"].ToString().Replace("EInstrument::", String.Empty);
-            song.loop.instrument = (HyuzuEnums.Instruments)Enum.Parse(typeof(HyuzuEnums.Instruments), loopIcon);
+            song.loop.instrument = (Enums.Instruments)Enum.Parse(typeof(Enums.Instruments), loopIcon);
 
             var leadIcon = leadMetadata["Instrument"].ToString().Replace("EInstrument::", String.Empty);
-            song.lead.instrument = (HyuzuEnums.Instruments)Enum.Parse(typeof(HyuzuEnums.Instruments), leadIcon);
+            song.lead.instrument = (Enums.Instruments)Enum.Parse(typeof(Enums.Instruments), leadIcon);
         }
 
         #region .UASSET and .UEXP stuff

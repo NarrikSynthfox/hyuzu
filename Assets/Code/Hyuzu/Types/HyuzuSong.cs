@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 using Hyuzu;
 using System;
 using Unity.VisualScripting.Antlr3.Runtime;
@@ -14,12 +15,12 @@ namespace Hyuzu {
         [Space]
 
         public bool unpitched;
-        public HyuzuEnums.KeymapPreset preset;
+        public Enums.KeymapPreset preset;
     }
 
     [System.Serializable]
     public class ClipInfo {
-        public List<HyuzuMogg> clipsRaw = new List<HyuzuMogg>();
+        public List<Mogg> clipsRaw = new List<Mogg>();
         public HyuzuFusion metadata = new HyuzuFusion();
 
         [Space]
@@ -30,15 +31,15 @@ namespace Hyuzu {
         [Space]
 
         public float[] pickups;
-        public HyuzuEnums.Instruments instrument = HyuzuEnums.Instruments.None;
+        public Enums.Instruments instrument = Enums.Instruments.None;
 
         [Space]
 
-        public HyuzuEnums.DiscLength discLength = HyuzuEnums.DiscLength.BARS_32;
+        public Enums.DiscLength discLength = Enums.DiscLength.BARS_32;
     }
 
     [CreateAssetMenu(fileName = "Song", menuName = "Hyuzu/New Song", order = 1)]
-    public class HyuzuSong : ScriptableObject
+    public class Song : ScriptableObject
     {
         public string creator;
 
@@ -51,7 +52,7 @@ namespace Hyuzu {
 
         [Space]
 
-        public HyuzuEnums.Genres genre;
+        public Enums.Genres genre;
         public string subgenre;
 
         [Space]
@@ -64,8 +65,8 @@ namespace Hyuzu {
 
         [Space]
 
-        public HyuzuEnums.Keys key;
-        public HyuzuEnums.Modes mode;
+        public Enums.Keys key;
+        public Enums.Modes mode;
 
         public List<int> transposes;
 
@@ -89,7 +90,14 @@ namespace Hyuzu {
         [SerializeField]
         public ClipInfo lead = new ClipInfo();
 
+        [Space]
+
         public bool fromPak = false;
+        public string jsonPath = "";
+
+        [Space]
+
+        int lol;
 
         public byte[] GetDefaultClip(ClipInfo songCell) {
             foreach (Keyzone item in songCell.keyzonesClips)
@@ -105,14 +113,14 @@ namespace Hyuzu {
             List<byte[]> bytes = new List<byte[]>();
             foreach (Keyzone item in songCell.keyzonesClips)
             {
-                if (item.preset == HyuzuEnums.KeymapPreset.Shared) {
+                if (item.preset == Enums.KeymapPreset.Shared) {
                     bytes.Add(songCell.clipsRaw[item.index].data);
                 }
             }
             return bytes;
         }
 
-        public HyuzuSong() {
+        public Song() {
             if (transposes == null) {
                 transposes = new List<int>();
                 TransposeKeys();

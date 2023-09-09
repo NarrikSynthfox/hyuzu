@@ -9,7 +9,7 @@ using TMPro;
 
 public class SongInGame : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    public HyuzuSong song;
+    public Song song;
 
     [Space]
 
@@ -36,10 +36,10 @@ public class SongInGame : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         songArtist.alpha = 0;
         songCover.sprite = song.cover;
 
-        beatIcon.sprite = HyuzuAssetManager.GetInstrumentIcon(song.beat.instrument);
-        bassIcon.sprite = HyuzuAssetManager.GetInstrumentIcon(song.bass.instrument);
-        loopIcon.sprite = HyuzuAssetManager.GetInstrumentIcon(song.loop.instrument);
-        leadIcon.sprite = HyuzuAssetManager.GetInstrumentIcon(song.lead.instrument);
+        beatIcon.sprite = Hyuzu.AssetManager.GetInstrumentIcon(song.beat.instrument);
+        bassIcon.sprite = Hyuzu.AssetManager.GetInstrumentIcon(song.bass.instrument);
+        loopIcon.sprite = Hyuzu.AssetManager.GetInstrumentIcon(song.loop.instrument);
+        leadIcon.sprite = Hyuzu.AssetManager.GetInstrumentIcon(song.lead.instrument);
 
         songTitle.text = song.songName;
         songArtist.text = song.artist;

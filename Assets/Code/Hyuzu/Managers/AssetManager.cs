@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace Hyuzu {
-    public class HyuzuAssetManager {
-        public static Sprite GetInstrumentIcon(HyuzuEnums.Instruments instrument) {
+    public class AssetManager {
+        public static Sprite GetInstrumentIcon(Enums.Instruments instrument) {
             return Resources.Load<Sprite>("InstrumentIcons/" + instrument.ToString().ToLower());
         }
         public static Sprite GetMissingAlbumArtIcon() {
